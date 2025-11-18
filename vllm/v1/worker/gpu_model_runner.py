@@ -2809,6 +2809,15 @@ class GPUModelRunner(
                 hidden_states = model_output
                 aux_hidden_states = None
 
+            # Flush pending benchmark events after forward pass
+            try:
+                from vllm.profiler import get_operator_benchmark
+                benchmark = get_operator_benchmark()
+                if benchmark.is_enabled():
+                    benchmark.flush_pending_events()
+            except Exception:
+                pass
+
             if not self.broadcast_pp_output:
                 # Common case.
                 if not get_pp_group().is_last_rank:
@@ -3391,6 +3400,52 @@ class GPUModelRunner(
                 self.model = UBatchWrapper(
                     self.model, self.vllm_config, CUDAGraphMode.NONE, self.device
                 )
+        
+        # Inject operator benchmark hooks if enabled
+        self._inject_operator_benchmark_if_enabled()
+
+    def _inject_operator_benchmark_if_enabled(self) -> None:
+        """Inject operator benchmark hooks into the model if enabled via env var."""
+        import os
+        
+        # Check if operator benchmarking is enabled
+        enable_benchmark = os.environ.get("VLLM_OPERATOR_BENCHMARK_ENABLE", "0")
+        if enable_benchmark not in ("1", "true", "True", "TRUE"):
+            return
+        
+        # Get operators to benchmark from env var
+        operators_str = os.environ.get(
+            "VLLM_OPERATOR_BENCHMARK_OPS", "attention,linear,layernorm,mlp"
+        )
+        operators_to_benchmark = [op.strip() for op in operators_str.split(",")]
+        
+        # Get warmup steps
+        warmup_steps = int(os.environ.get("VLLM_OPERATOR_BENCHMARK_WARMUP", "5"))
+        
+        logger.info(
+            f"Operator benchmarking enabled for operators: {operators_to_benchmark}"
+        )
+        
+        try:
+            from vllm.profiler import inject_benchmark_hooks, enable_operator_benchmark
+            
+            # Enable benchmarking in this worker process
+            enable_operator_benchmark(warmup_steps=warmup_steps)
+            
+            # Inject benchmark hooks into the model
+            num_instrumented = inject_benchmark_hooks(
+                self.model, operators_to_benchmark=operators_to_benchmark
+            )
+            
+            logger.info(
+                f"Successfully instrumented {num_instrumented} operators "
+                f"for benchmarking (warmup: {warmup_steps} steps)"
+            )
+        except Exception as e:
+            logger.warning(
+                f"Failed to inject operator benchmark hooks: {e}. "
+                "Continuing without operator benchmarking."
+            )
 
     def _get_eagle3_aux_layers_from_config(self) -> tuple[int, ...] | None:
         """Extract Eagle3 auxiliary layer indices from speculative config.
