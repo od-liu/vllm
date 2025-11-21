@@ -539,11 +539,11 @@ for event in self._pending_events:
                     ▼
 ┌─────────────────────────────────────────────────────────┐
 │  benchmark_wrapper()                                    │
-│  - 创建 CUDA Event (start, end)                        │
-│  - 调用 original_forward()                             │
-│  - 记录 end event                                       │
-│  - 提取 shapes                                          │
-│  - 创建 PendingEvent                                    │
+│  - 创建 CUDA Event (start, end)                          │
+│  - 调用 original_forward()                               │
+│  - 记录 end event                                        │
+│  - 提取 shapes                                           │
+│  - 创建 PendingEvent                                     │
 └─────────────────────────────────────────────────────────┘
                     │
                     ▼
