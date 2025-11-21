@@ -18,7 +18,7 @@ vLLM的operator benchmark系统可以在模型推理过程中自动测量各种�
 
 ## 快速开始
 
-### 基本使用
+### 基本使用（合成数据模式）
 
 ```bash
 cd /mnt/disk1/ljm/vllm
@@ -36,6 +36,31 @@ python benchmarks/benchmark_operators.py \
     --operators attention,linear,layernorm \
     --output results.json
 ```
+
+### Trace 数据模式（真实工作负载）
+
+使用真实的 trace 数据进行 benchmark，模拟生产环境的工作负载：
+
+```bash
+# 使用配置文件
+python benchmarks/benchmark_operators.py \
+    --config benchmarks/operator_configs/trace_config.py
+
+# 或使用命令行参数
+python benchmarks/benchmark_operators.py \
+    --model /path/to/your/model \
+    --trace-file /path/to/trace.jsonl \
+    --trace-time-range 0,30 \
+    --trace-seed 42 \
+    --operators attention,linear,layernorm,mlp \
+    --output trace_results.json
+```
+
+**Trace 模式特点**：
+- 使用真实的生产环境请求数据
+- 按照真实时间间隔发送请求（可配置）
+- 支持时间范围过滤（如前30分钟）
+- Warmup 阶段使用简单数据，benchmark 阶段使用 trace 数据
 
 ### 查看结果
 
@@ -92,6 +117,13 @@ config = BenchmarkConfig(
     enable_cuda_graph=True,               # 启用CUDA graph
     dtype="auto",                         # 数据类型
     gpu_memory_utilization=0.9,           # GPU内存使用率
+    
+    # Trace 模式配置（可选）
+    use_trace_data=False,                 # 是否使用 trace 数据
+    trace_file_path=None,                 # Trace JSONL 文件路径
+    trace_time_range_minutes=None,        # 时间范围 (start_min, end_min)
+    trace_hash_id_seed=42,                # Hash ID 映射的随机种子
+    trace_realtime_replay=True,           # 是否按真实时间间隔回放
 )
 ```
 
@@ -316,6 +348,69 @@ for config_key, config_diff in comparison["differences"].items():
 - 检查worker_variance_ms指标
 - 确保所有workers使用相同配置
 
+## Trace 数据模式详解
+
+### Trace 数据格式
+
+Trace 文件是 JSONL 格式，每行包含一个请求记录：
+
+```json
+{
+  "chat_id": 0,
+  "parent_chat_id": -1,
+  "timestamp": 0.0,
+  "input_length": 1261,
+  "output_length": 102,
+  "type": "api",
+  "turn": 1,
+  "hash_ids": [0, 1, 2, 3, ...]
+}
+```
+
+**字段说明**：
+- `chat_id`: 会话标识符
+- `parent_chat_id`: 父会话ID（-1表示根请求）
+- `timestamp`: 相对时间戳（秒）
+- `input_length`: 输入 token 数量
+- `output_length`: 输出 token 数量
+- `type`: 请求类型（text, api, search, image, file）
+- `turn`: 对话轮次
+- `hash_ids`: 加密的 token 块ID列表（每个块16个tokens）
+
+### Hash ID 映射机制
+
+由于 trace 数据中的 tokens 被加密为 hash_ids，系统使用确定性映射将 hash_ids 转换为 token IDs：
+
+1. **确定性映射**: 每个 hash_id 总是映射到相同的 16 个 token IDs
+2. **可重复性**: 使用固定种子确保结果可重复
+3. **词汇表范围**: Token IDs 在有效范围内（1 到 vocab_size-1）
+
+### 时间范围过滤
+
+可以指定时间范围来只 benchmark 部分请求：
+
+```python
+config = BenchmarkConfig(
+    # ...
+    trace_time_range_minutes=(0, 30),  # 前30分钟
+    # 或
+    trace_time_range_minutes=(60, 90),  # 60-90分钟
+)
+```
+
+### 实时回放 vs 批量提交
+
+- **实时回放** (`trace_realtime_replay=True`): 按照 trace 中的时间间隔发送请求，模拟真实场景
+- **批量提交** (`trace_realtime_replay=False`): 立即提交所有请求，适合快速测试
+
+### Trace 模式执行流程
+
+1. **Warmup 阶段**: 使用简单的合成数据预热模型（5步）
+2. **Trace 加载**: 从 JSONL 文件加载请求并过滤时间范围
+3. **Hash ID 映射**: 将 hash_ids 转换为 token IDs
+4. **请求调度**: 按照时间戳调度请求（支持并发）
+5. **数据收集**: 自动收集所有 operator 的性能数据
+
 ## 示例配置文件
 
 查看 `benchmarks/operator_configs/` 目录中的示例配置：
@@ -323,6 +418,7 @@ for config_key, config_diff in comparison["differences"].items():
 - `quick_test_config.py`: 快速测试配置
 - `llama_config.py`: Llama模型配置
 - `mixtral_config.py`: Mixtral MoE模型配置
+- `trace_config.py`: Trace 数据模式配置
 
 ## 贡献
 

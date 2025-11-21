@@ -220,31 +220,32 @@ def inject_benchmark_hooks(
         
         # Determine operator type
         operator_type = get_operator_type(module)
-        
+        # 不是支持的operator类型，跳过
         if operator_type is None:
             continue
         
-        # Check if we should benchmark this operator type
+        # 如果当前operator类型不在需要benchmark的类型中，跳过
         if not benchmark_all and operator_type not in operators_set:
             continue
         
         # Get the full layer name
+        # 构建完整的层名称
         full_name = f"{module_prefix}.{name}" if module_prefix else name
         if not full_name:
             full_name = module.__class__.__name__
         
         # Wrap the forward method
         try:
-            original_forward = module.forward
-            wrapped_forward = create_benchmark_wrapper(
+            original_forward = module.forward   # 原始forward函数
+            wrapped_forward = create_benchmark_wrapper(  # 包装函数
                 original_forward,
                 module,
                 full_name,
                 operator_type,
             )
-            module.forward = wrapped_forward
+            module.forward = wrapped_forward  # 替换原始forward函数
             module._benchmark_instrumented = True
-            instrumented_count += 1
+            instrumented_count += 1  # 计数加1
             
             logger.debug(
                 f"Instrumented {operator_type} operator: {full_name}"

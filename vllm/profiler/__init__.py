@@ -22,6 +22,9 @@ from vllm.profiler.multiworker_aggregator import (
     merge_results_by_config,
     compare_results,
 )
+from vllm.profiler.trace_loader import TraceLoader, TraceRequest
+from vllm.profiler.hash_id_mapper import HashIDMapper
+from vllm.profiler.trace_scheduler import TraceScheduler
 
 __all__ = [
     "OperatorBenchmark",
@@ -38,5 +41,9 @@ __all__ = [
     "load_worker_results_from_temp",
     "merge_results_by_config",
     "compare_results",
+    "TraceLoader",
+    "TraceRequest",
+    "HashIDMapper",
+    "TraceScheduler",
 ]
 
