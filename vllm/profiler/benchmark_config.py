@@ -24,6 +24,9 @@ class BenchmarkConfig:
     pipeline_parallel_size: int = 1
     """Number of GPUs for pipeline parallelism."""
     
+    data_parallel_size: int = 1
+    """Number of data parallel replicas (for future use)."""
+    
     max_model_len: Optional[int] = None
     """Maximum model context length."""
     
@@ -110,6 +113,15 @@ class BenchmarkConfig:
     trace_realtime_replay: bool = True
     """Whether to replay requests with real-time intervals from trace."""
     
+    # End-to-end metrics configuration
+    enable_e2e_metrics: bool = False
+    """Whether to collect end-to-end metrics (TTFT, TPOT, etc.).
+    
+    When enabled with use_trace_data=True, the benchmark will run in two phases:
+    1. Phase 1: Collect E2E metrics with operator benchmark disabled
+    2. Phase 2: Collect operator performance with operator benchmark enabled
+    """
+    
     def validate(self) -> None:
         """Validate configuration parameters."""
         if not self.model_path:
@@ -120,6 +132,15 @@ class BenchmarkConfig:
         
         if self.pipeline_parallel_size < 1:
             raise ValueError("pipeline_parallel_size must be >= 1")
+        
+        if self.data_parallel_size < 1:
+            raise ValueError("data_parallel_size must be >= 1")
+        
+        if self.enable_e2e_metrics and not self.use_trace_data:
+            raise ValueError(
+                "enable_e2e_metrics=True requires use_trace_data=True. "
+                "E2E metrics collection currently only supports trace-based benchmarking."
+            )
         
         if self.warmup_steps < 0:
             raise ValueError("warmup_steps must be >= 0")
@@ -176,6 +197,8 @@ class BenchmarkConfig:
             "trace_time_range_minutes": self.trace_time_range_minutes,
             "trace_hash_id_seed": self.trace_hash_id_seed,
             "trace_realtime_replay": self.trace_realtime_replay,
+            "data_parallel_size": self.data_parallel_size,
+            "enable_e2e_metrics": self.enable_e2e_metrics,
         }
         return result
 

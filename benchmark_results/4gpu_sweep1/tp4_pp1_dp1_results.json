@@ -1,0 +1,93 @@
+{
+  "config": {
+    "model_path": "/mnt/disk1/ljm/qwen_test/models/Qwen/Qwen3-8B",
+    "tensor_parallel_size": 4,
+    "pipeline_parallel_size": 1,
+    "max_model_len": null,
+    "batch_sizes": [
+      1,
+      4,
+      8
+    ],
+    "seq_lengths": [
+      512,
+      1024
+    ],
+    "warmup_steps": 5,
+    "benchmark_steps": 0,
+    "operators_to_benchmark": [
+      "all"
+    ],
+    "output_file": "benchmark_results/4gpu_sweep/tp4_pp1_dp1_results.json",
+    "include_per_layer_stats": true,
+    "include_summary_stats": true,
+    "verbose": true,
+    "enable_cuda_graph": false,
+    "dtype": "auto",
+    "gpu_memory_utilization": 0.7,
+    "use_trace_data": true,
+    "trace_file_path": "/mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_traceB_test_2min.jsonl",
+    "trace_time_range_minutes": [
+      0,
+      2
+    ],
+    "trace_hash_id_seed": 42,
+    "trace_realtime_replay": true,
+    "data_parallel_size": 1,
+    "enable_e2e_metrics": true
+  },
+  "results": [
+    {
+      "mode": "trace_operator",
+      "trace_file": "/mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_traceB_test_2min.jsonl",
+      "trace_time_range_minutes": [
+        0,
+        2
+      ],
+      "num_trace_requests": 30,
+      "warmup_steps": 5,
+      "total_wall_time_seconds": 117.32943421928212,
+      "total_forward_time_ms": 0.0
+    }
+  ],
+  "metadata": {
+    "timestamp": "2025-11-24 03:02:37",
+    "cuda_available": true,
+    "cuda_device_count": 4
+  },
+  "e2e_metrics": {
+    "num_requests": 30,
+    "total_time_seconds": 116.37780337315053,
+    "ttft_ms": {
+      "mean": 145.77904542287192,
+      "p50": 141.198992729187,
+      "p90": 169.20769214630127,
+      "p99": 342.60801076889055
+    },
+    "tpot_ms": {
+      "mean": 112.75680878004667,
+      "p50": 111.11856764182448,
+      "p90": 139.5951798185706,
+      "p99": 160.11295871809122
+    },
+    "e2e_latency_ms": {
+      "mean": 784.65051514407,
+      "p50": 725.0625840388238,
+      "p90": 1372.7882630657405,
+      "p99": 1588.0981797352435
+    },
+    "queued_time_ms": {
+      "mean": 0.17655685854454836,
+      "p50": 0.18887687474489212,
+      "p90": 0.20427526906132698,
+      "p99": 0.21094740368425846
+    },
+    "total_prompt_tokens": 24986,
+    "total_generation_tokens": 199,
+    "throughput_tokens_per_sec": 216.40724665723
+  },
+  "operator_performance": {
+    "per_layer_stats": [],
+    "summary_stats": {}
+  }
+}

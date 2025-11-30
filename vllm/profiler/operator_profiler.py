@@ -334,10 +334,12 @@ class OperatorBenchmark:
                         "/tmp/vllm_operator_benchmark.json"
                     )
                     try:
-                        self._save_results_internal(output_file)  # 保存结果到临时文件
-                        logger.debug(
-                            f"Auto-saved {len(self._records)} benchmark records to {output_file}"
+                        # Log before save for debugging
+                        logger.info(
+                            f"Auto-saving {len(self._records)} records after flush "
+                            f"({len(records_to_add)} new) to {output_file}"
                         )
+                        self._save_results_internal(output_file)  # 保存结果到临时文件
                     except Exception as e:
                         logger.warning(f"Failed to auto-save benchmark results: {e}")
             
@@ -454,11 +456,43 @@ class OperatorBenchmark:
             "total_forward_time_ms": results.total_forward_time_ms,
         }
         
-        output_file = Path(output_path)
-        output_file.parent.mkdir(parents=True, exist_ok=True)
+        output_file_path = Path(output_path)
+        
+        # IMPORTANT: For TP>1, each worker must write to a separate file to avoid conflicts
+        # Check if this is a TP worker and add rank suffix if needed
+        tp_rank_info = "unknown"
+        try:
+            from vllm.distributed import get_tensor_model_parallel_rank, get_tensor_model_parallel_world_size
+            tp_rank = get_tensor_model_parallel_rank()
+            tp_size = get_tensor_model_parallel_world_size()
+            tp_rank_info = f"TP{tp_rank}/{tp_size}"
+            
+            # Only add suffix if TP>1 (multiple workers)
+            if tp_size > 1:
+                # Modify filename to include TP rank: file.json -> file_tp{rank}.json
+                stem = output_file_path.stem
+                suffix = output_file_path.suffix
+                parent = output_file_path.parent
+                output_file_path = parent / f"{stem}_tp{tp_rank}{suffix}"
+        except Exception:
+            # If we can't get TP info, proceed with original path
+            pass
+        
+        # Debug info
+        num_layers = len(results.per_layer_stats) if isinstance(results.per_layer_stats, dict) else 0
+        total_records = len(self._records)
+        
+        output_file_path.parent.mkdir(parents=True, exist_ok=True)
         # 将字典保存为JSON文件
-        with open(output_file, "w") as f:
+        with open(output_file_path, "w") as f:
             json.dump(output_dict, f, indent=2)
+        
+        # Log save operation for debugging
+        logger.info(
+            f"[{tp_rank_info}] Saved benchmark results to {output_file_path}: "
+            f"{total_records} records, {num_layers} layers, "
+            f"{results.total_forward_time_ms:.2f}ms total"
+        )
     
     # 公开的保存方式（带日志）
     def save_results(self, output_path: str) -> None:

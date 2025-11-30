@@ -3445,7 +3445,7 @@ class GPUModelRunner(
             logger.warning(
                 f"Failed to inject operator benchmark hooks: {e}. "
                 "Continuing without operator benchmarking."
-            )
+                )
 
     def _get_eagle3_aux_layers_from_config(self) -> tuple[int, ...] | None:
         """Extract Eagle3 auxiliary layer indices from speculative config.

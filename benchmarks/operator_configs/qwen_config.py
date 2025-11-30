@@ -18,7 +18,7 @@ config = BenchmarkConfig(
     # Benchmark configuration - minimal for speed
     batch_sizes=[1, 4],
     seq_lengths=[128, 256],
-    warmup_steps=2,
+    warmup_steps=2,   # tmux
     benchmark_steps=10,
     
     # Operator selection - test all operators

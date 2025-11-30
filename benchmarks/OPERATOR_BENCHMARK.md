@@ -62,6 +62,27 @@ python benchmarks/benchmark_operators.py \
 - 支持时间范围过滤（如前30分钟）
 - Warmup 阶段使用简单数据，benchmark 阶段使用 trace 数据
 
+### 两阶段测试模式（E2E指标 + Operator性能）
+
+当同时启用 `enable_e2e_metrics=True` 和 `use_trace_data=True` 时，系统会自动执行两阶段测试：
+
+1. **阶段1（E2E指标）**：禁用operator benchmark，收集端到端指标（TTFT、TPOT、E2E latency、throughput等）
+2. **阶段2（Operator性能）**：启用operator benchmark，收集operator性能数据
+
+两阶段使用相同的trace数据，确保结果的一致性。
+
+```bash
+# 使用配置文件（推荐）
+python benchmarks/benchmark_operators.py \
+    --config benchmarks/operator_configs/e2e_trace_config.py
+```
+
+**两阶段模式特点**：
+- 自动执行两阶段测试，无需手动操作
+- 使用相同的trace数据，确保结果可比性
+- 同时获得端到端指标和operator性能数据
+- 统一输出到一个JSON文件
+
 ### 查看结果
 
 ```bash
@@ -124,6 +145,10 @@ config = BenchmarkConfig(
     trace_time_range_minutes=None,        # 时间范围 (start_min, end_min)
     trace_hash_id_seed=42,                # Hash ID 映射的随机种子
     trace_realtime_replay=True,           # 是否按真实时间间隔回放
+    
+    # 端到端指标配置（可选）
+    enable_e2e_metrics=False,             # 是否收集端到端指标（需要use_trace_data=True）
+    data_parallel_size=1,                  # 数据并行大小（保留用于未来扩展）
 )
 ```
 
@@ -142,6 +167,8 @@ config = BenchmarkConfig(
 ## 输出格式
 
 ### JSON结构
+
+#### 标准模式（仅Operator性能）
 
 ```json
 {
@@ -196,6 +223,77 @@ config = BenchmarkConfig(
     "cuda_device_count": 8
   }
 }
+```
+
+#### 两阶段模式（E2E指标 + Operator性能）
+
+当启用 `enable_e2e_metrics=True` 时，输出包含额外的 `e2e_metrics` 和 `operator_performance` 字段：
+
+```json
+{
+  "config": {
+    "model_path": "...",
+    "tensor_parallel_size": 1,
+    "enable_e2e_metrics": true,
+    "use_trace_data": true,
+    ...
+  },
+  "e2e_metrics": {
+    "num_requests": 100,
+    "total_time_seconds": 45.2,
+    "ttft_ms": {
+      "mean": 125.3,
+      "p50": 120.5,
+      "p90": 145.2,
+      "p99": 180.1
+    },
+    "tpot_ms": {
+      "mean": 15.8,
+      "p50": 15.2,
+      "p90": 18.5,
+      "p99": 22.3
+    },
+    "e2e_latency_ms": {
+      "mean": 850.5,
+      "p50": 820.3,
+      "p90": 950.2,
+      "p99": 1100.5
+    },
+    "queued_time_ms": {
+      "mean": 5.2,
+      "p50": 4.8,
+      "p90": 8.5,
+      "p99": 12.3
+    },
+    "throughput_tokens_per_sec": 1250.5,
+    "total_prompt_tokens": 50000,
+    "total_generation_tokens": 65000
+  },
+  "operator_performance": {
+    "per_layer_stats": [...],
+    "summary_stats": {...}
+  },
+  "results": [
+    {
+      "mode": "trace_operator",
+      ...
+    }
+  ],
+  "metadata": {
+    "timestamp": "2025-11-18 10:30:00",
+    "cuda_available": true,
+    "cuda_device_count": 8
+  }
+}
+```
+
+**E2E指标说明**：
+- `ttft_ms`: Time to First Token（首token延迟），单位毫秒
+- `tpot_ms`: Time Per Output Token（每个输出token的平均时间），单位毫秒
+- `e2e_latency_ms`: End-to-End Latency（端到端延迟），单位毫秒
+- `queued_time_ms`: Queued Time（排队时间），单位毫秒
+- `throughput_tokens_per_sec`: Throughput（吞吐量），单位tokens/秒
+- 每个指标都包含 `mean`（平均值）、`p50`（中位数）、`p90`（90分位）、`p99`（99分位）统计值
 ```
 
 ## 高级用法

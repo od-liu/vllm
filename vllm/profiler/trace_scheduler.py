@@ -107,12 +107,15 @@ class TraceScheduler:
         """
         # Wait until the scheduled time if realtime mode
         if realtime:
+            # 计算目标时间 = 基准时间 + trace中的时间戳
             target_time = base_time + trace_req.timestamp
+            # 获取当前时间
             current_time = time.time()
+            # 计算等待时间 = 目标时间 - 当前时间
             wait_time = target_time - current_time
             
             if wait_time > 0:
-                await asyncio.sleep(wait_time)
+                await asyncio.sleep(wait_time)   # 使用 asyncio.sleep 非阻塞等待
             elif wait_time < -1.0:
                 # If we're more than 1 second behind, log a warning
                 logger.warning(
@@ -267,6 +270,9 @@ class TraceScheduler:
             await update_progress()
             return result
         
+        # 所有任务在开始时同时创建
+        # 每个任务独立运行，但会按时间等待
+        # 使用asyncio.create_task()实现并发
         tasks = [
             asyncio.create_task(
                 process_with_progress_realtime(req, i)

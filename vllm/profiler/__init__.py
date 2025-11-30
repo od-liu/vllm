@@ -25,6 +25,7 @@ from vllm.profiler.multiworker_aggregator import (
 from vllm.profiler.trace_loader import TraceLoader, TraceRequest
 from vllm.profiler.hash_id_mapper import HashIDMapper
 from vllm.profiler.trace_scheduler import TraceScheduler
+from vllm.profiler.e2e_metrics import E2EMetrics, E2EMetricsCollector
 
 __all__ = [
     "OperatorBenchmark",
@@ -45,5 +46,7 @@ __all__ = [
     "TraceRequest",
     "HashIDMapper",
     "TraceScheduler",
+    "E2EMetrics",
+    "E2EMetricsCollector",
 ]
 
