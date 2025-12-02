@@ -38,21 +38,42 @@ def aggregate_worker_results(
     if len(worker_results) == 1:
         return worker_results[0]
     
-    logger.info(f"Aggregating results from {len(worker_results)} workers")
+    num_workers = len(worker_results)
+    logger.info(f"Aggregating results from {num_workers} workers")
+    
+    # Log worker statistics
+    total_layers = sum(len(w.per_layer_stats) for w in worker_results)
+    logger.info(f"Total layer statistics to process: {total_layers}")
+    logger.info(f"Average per worker: {total_layers // num_workers}")
     
     # Aggregate per-layer statistics
     # Group by layer name and operator type
+    logger.info("Step 1/3: Grouping layer statistics...")
     layer_groups = defaultdict(list)
     
-    for worker_result in worker_results:
+    for worker_idx, worker_result in enumerate(worker_results):
+        worker_layers = len(worker_result.per_layer_stats)
+        logger.info(f"  Processing worker {worker_idx}/{num_workers}: {worker_layers} layers")
         for layer_stat in worker_result.per_layer_stats:
             key = (layer_stat["layer_name"], layer_stat["operator_type"])
             layer_groups[key].append(layer_stat)
     
+    logger.info(f"  Grouped into {len(layer_groups)} unique layer-operator combinations")
+    
     # Compute aggregated statistics for each layer
+    logger.info(f"Step 2/3: Computing aggregated statistics for {len(layer_groups)} layers...")
     aggregated_per_layer = []
     
-    for (layer_name, operator_type), stats_list in sorted(layer_groups.items()):
+    # Process in batches for progress reporting
+    layer_items = sorted(layer_groups.items())
+    batch_size = max(100, len(layer_items) // 10)  # Report every 10% or every 100 layers
+    
+    for idx, ((layer_name, operator_type), stats_list) in enumerate(layer_items):
+        # Progress reporting
+        if idx % batch_size == 0 and idx > 0:
+            progress_pct = (idx / len(layer_items)) * 100
+            logger.info(f"  Progress: {idx}/{len(layer_items)} layers ({progress_pct:.1f}%)")
+        
         # Average across workers
         num_calls_list = [s["num_calls"] for s in stats_list]
         avg_time_list = [s["avg_time_ms"] for s in stats_list]
@@ -74,13 +95,17 @@ def aggregate_worker_results(
         
         aggregated_per_layer.append(aggregated_stat)
     
+    logger.info(f"  ✓ Completed aggregating {len(aggregated_per_layer)} layer statistics")
+    
     # Aggregate summary statistics
+    logger.info("Step 3/3: Aggregating summary statistics...")
     operator_groups = defaultdict(list)
     
     for worker_result in worker_results:
         for op_type, op_stats in worker_result.summary_stats.items():
             operator_groups[op_type].append(op_stats)
     
+    logger.info(f"  Found {len(operator_groups)} unique operator types")
     aggregated_summary = {}
     
     for op_type, stats_list in sorted(operator_groups.items()):
@@ -113,6 +138,11 @@ def aggregate_worker_results(
     avg_total_forward_time = float(
         np.mean([r.total_forward_time_ms for r in worker_results])
     )
+    
+    logger.info("✓ Aggregation complete!")
+    logger.info(f"  Aggregated {len(aggregated_per_layer)} layer statistics")
+    logger.info(f"  Aggregated {len(aggregated_summary)} operator types")
+    logger.info(f"  Average total forward time: {avg_total_forward_time:.2f} ms")
     
     return BenchmarkResults(
         per_layer_stats=aggregated_per_layer,

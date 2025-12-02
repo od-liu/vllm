@@ -20,6 +20,7 @@ import json
 import os
 import sys
 import tempfile
+import threading
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -329,6 +330,32 @@ def run_benchmark_single_rank(config: BenchmarkConfig, dp_rank: int = 0, dp_size
             
             # Run trace requests for operator performance
             logger.info("Running trace requests for operator performance collection...")
+            logger.info(f"  Total requests: {len(trace_requests)}")
+            if trace_requests:
+                max_output = max(r.output_length for r in trace_requests)
+                avg_output = sum(r.output_length for r in trace_requests) / len(trace_requests)
+                logger.info(f"  Output length - max: {max_output}, avg: {avg_output:.1f}")
+            sys.stdout.flush()
+            
+            # Create progress monitor thread
+            completed_requests = [0]
+            total_requests = len(trace_requests)
+            monitor_stop = threading.Event()
+            
+            def monitor_progress():
+                """Log progress every 30 seconds."""
+                while not monitor_stop.is_set():
+                    if monitor_stop.wait(30):
+                        break
+                    logger.info(
+                        f"  📊 Trace progress: {completed_requests[0]}/{total_requests} "
+                        f"requests completed ({100*completed_requests[0]/total_requests:.1f}%)..."
+                    )
+                    sys.stdout.flush()
+            
+            monitor_thread = threading.Thread(target=monitor_progress, daemon=True)
+            monitor_thread.start()
+            
             op_start_time = time.perf_counter()
             
             op_outputs = asyncio.run(
@@ -338,14 +365,27 @@ def run_benchmark_single_rank(config: BenchmarkConfig, dp_rank: int = 0, dp_size
                 )
             )
             
+            completed_requests[0] = len(op_outputs) if op_outputs else 0
+            
             op_end_time = time.perf_counter()
             op_total_time = op_end_time - op_start_time
             
-            logger.info(f"Phase 2 completed in {op_total_time:.2f} seconds")
-            logger.info(f"Processed {len(op_outputs)} requests")
+            logger.info(f"\n✓ Phase 2 completed: {completed_requests[0]}/{total_requests} requests in {op_total_time:.2f}s")
+            sys.stdout.flush()
+            
+            # CRITICAL: Flush all pending CUDA events to ensure results are saved
+            # logger.info("Flushing pending CUDA events and saving results...")
+            sys.stdout.flush()
+            benchmark.flush_pending_events()
+            # logger.info("✓ Pending events flushed")
+            sys.stdout.flush()
             
             # Wait for worker to write results (increased to 2 seconds for reliability)
+            logger.info("Waiting for worker files to be written...")
+            sys.stdout.flush()
             time.sleep(2.0)
+            logger.info("✓ Wait complete, proceeding to read results")
+            sys.stdout.flush()
             
             # Collect operator performance results from all TP ranks
             # Worker writes to either:
@@ -360,8 +400,11 @@ def run_benchmark_single_rank(config: BenchmarkConfig, dp_rank: int = 0, dp_size
             
             # Add detailed diagnostic logging
             logger.info(f"Attempting to read worker files:")
+            sys.stdout.flush()
             logger.info(f"  Base file: {worker_file_path} (exists: {worker_file_path.exists()})")
+            sys.stdout.flush()
             logger.info(f"  Looking for TP files: {worker_file_base}_tp*.json in {worker_file_dir}")
+            sys.stdout.flush()
             
             # List all files in directory for debugging
             try:
@@ -401,6 +444,8 @@ def run_benchmark_single_rank(config: BenchmarkConfig, dp_rank: int = 0, dp_size
             
             # If no base file, try per-TP files (for TP>1 case)
             if not all_tp_results:
+                logger.info("  Searching for TP rank files...")
+                sys.stdout.flush()
                 tp_rank = 0
                 found_any = False
                 while True:
@@ -411,13 +456,21 @@ def run_benchmark_single_rank(config: BenchmarkConfig, dp_rank: int = 0, dp_size
                         for retry in range(max_retries):
                             try:
                                 stat = tp_file.stat()
+                                logger.info(f"  Reading TP rank {tp_rank}: {tp_file.name} ({stat.st_size / 1024 / 1024:.2f} MB)...")
+                                sys.stdout.flush()
                                 # Check file size is reasonable (should be >100KB for operator data)
                                 if stat.st_size > 100000:
+                                    logger.info(f"  Parsing JSON for TP rank {tp_rank}...")
+                                    sys.stdout.flush()
                                     with open(tp_file, 'r') as f:
                                         tp_results = json.load(f)
+                                    logger.info(f"  JSON parsing complete for TP rank {tp_rank}")
+                                    sys.stdout.flush()
                                     # Check if file has the expected structure
                                     if "per_layer_stats" in tp_results:
-                                        logger.info(f"  ✓ Successfully loaded {tp_file.name} ({stat.st_size} bytes)")
+                                        num_layers = len(tp_results.get("per_layer_stats", []))
+                                        logger.info(f"  ✓ Successfully loaded TP{tp_rank}: {num_layers} layer stats")
+                                        sys.stdout.flush()
                                         all_tp_results.append(tp_results)
                                         break
                                 elif retry < max_retries - 1:
@@ -456,11 +509,15 @@ def run_benchmark_single_rank(config: BenchmarkConfig, dp_rank: int = 0, dp_size
                 
                 # Add diagnostic logging
                 logger.info(f"  Total per_layer_stats collected: {len(all_per_layer)}")
+                sys.stdout.flush()
                 logger.info(f"  Non-empty per_layer_stats: {len(non_empty_per_layer)}")
+                sys.stdout.flush()
                 if all_per_layer and not non_empty_per_layer:
                     logger.warning("  All per_layer_stats are empty!")
+                    sys.stdout.flush()
                     for i, p in enumerate(all_per_layer):
                         logger.warning(f"    Rank {i}: type={type(p)}, len={len(p) if isinstance(p, (dict, list)) else 'N/A'}")
+                        sys.stdout.flush()
                 
                 if non_empty_per_layer:
                     # Check if data is in list format (from worker) or dict format (from main process)
@@ -474,11 +531,17 @@ def run_benchmark_single_rank(config: BenchmarkConfig, dp_rank: int = 0, dp_size
                         
                         # Just use the data from first rank (they should be identical for TP)
                         # For now, pass through the list format and convert to dict in aggregation
+                        logger.info(f"  Aggregating layer stats (using first rank's {len(first_data)} layers)...")
+                        sys.stdout.flush()
                         aggregated_per_layer = first_data  # Keep as list
                         
+                        logger.info(f"  Aggregating summary stats across {len(all_tp_results)} TP ranks...")
+                        sys.stdout.flush()
                         aggregated_summary = {}
-                        for r in all_tp_results:
+                        for rank_idx, r in enumerate(all_tp_results):
                             summary = r.get('summary_stats', {})
+                            logger.info(f"    Processing TP rank {rank_idx}: {len(summary)} operator types")
+                            sys.stdout.flush()
                             for op_type, stats in summary.items():
                                 if op_type not in aggregated_summary:
                                     aggregated_summary[op_type] = stats.copy()
@@ -499,7 +562,9 @@ def run_benchmark_single_rank(config: BenchmarkConfig, dp_rank: int = 0, dp_size
                         aggregated_summary['num_tp_ranks_aggregated'] = len(all_tp_results)
                         
                         logger.info(f"  ✓ Aggregated {len(aggregated_per_layer)} layer records from {len(all_tp_results)} TP ranks")
+                        sys.stdout.flush()
                         logger.info(f"  Total forward time: {total_forward_time:.2f}ms")
+                        sys.stdout.flush()
                         
                         op_results = type('BenchmarkResults', (), {
                             'per_layer_stats': aggregated_per_layer,
@@ -663,6 +728,16 @@ def run_benchmark_single_rank(config: BenchmarkConfig, dp_rank: int = 0, dp_size
             
             # Run trace-based benchmark
             logger.info("Starting trace-based benchmark execution...")
+            logger.info(f"  Total requests: {len(trace_requests)}")
+            if trace_requests:
+                max_output = max(r.output_length for r in trace_requests)
+                avg_output = sum(r.output_length for r in trace_requests) / len(trace_requests)
+                logger.info(f"  Output length - max: {max_output}, avg: {avg_output:.1f}")
+            
+            # Progress monitoring is handled by trace_scheduler internally
+            completed_requests = [0]
+            total_requests = len(trace_requests)
+            
             start_time = time.perf_counter()
             
             # Run async scheduler
@@ -673,14 +748,23 @@ def run_benchmark_single_rank(config: BenchmarkConfig, dp_rank: int = 0, dp_size
                 )
             )
             
+            completed_requests[0] = len(outputs) if outputs else 0
+            monitor_stop.set()
+            
             end_time = time.perf_counter()
             total_time = end_time - start_time
             
-            logger.info(f"Trace benchmark completed in {total_time:.2f} seconds")
-            logger.info(f"Processed {len(outputs)} requests")
+            logger.info(f"\n✓ Trace benchmark completed: {completed_requests[0]}/{total_requests} requests in {total_time:.2f}s")
+            
+            # CRITICAL: Flush all pending CUDA events to ensure results are saved
+            logger.info("Flushing pending CUDA events and saving results...")
+            benchmark.flush_pending_events()
+            logger.info("✓ Pending events flushed")
             
             # Wait for worker to write results
+            logger.info("Waiting for worker files to be written...")
             time.sleep(0.5)
+            logger.info("✓ Wait complete, proceeding to read results")
             
             # Collect results from worker process
             results = None
@@ -847,10 +931,175 @@ def run_benchmark_single_rank(config: BenchmarkConfig, dp_rank: int = 0, dp_size
         output_path = Path(config.output_file)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         
-        with open(output_path, "w") as f:
-            json.dump(final_results, f, indent=2)
+        # Estimate size and complexity before writing
+        logger.info(f"\n{'='*80}")
+        sys.stdout.flush()
+        logger.info("Preparing to write final results...")
+        sys.stdout.flush()
+        logger.info(f"{'='*80}")
+        sys.stdout.flush()
         
-        logger.info(f"\nResults saved to: {output_path}")
+        # Count data elements for better size estimation
+        num_operator_layers = 0
+        if 'operator_performance' in final_results and final_results['operator_performance']:
+            op_perf = final_results['operator_performance']
+            if isinstance(op_perf, list):
+                num_operator_layers = len(op_perf)
+            elif isinstance(op_perf, dict) and 'per_layer_stats' in op_perf:
+                num_operator_layers = len(op_perf['per_layer_stats'])
+        
+        logger.info(f"  Results contain:")
+        sys.stdout.flush()
+        logger.info(f"    - Config: Yes")
+        logger.info(f"    - Metadata: Yes")
+        sys.stdout.flush()
+        if 'results' in final_results:
+            logger.info(f"    - Benchmark iterations: {len(final_results['results'])}")
+            sys.stdout.flush()
+        if num_operator_layers > 0:
+            logger.info(f"    - Operator layers: {num_operator_layers}")
+            sys.stdout.flush()
+            logger.info(f"\n⚠️  Large dataset detected! JSON serialization may take 1-5 minutes...")
+            sys.stdout.flush()
+            logger.info(f"    Please be patient, the file is being written...")
+            sys.stdout.flush()
+        
+        result_size_mb = sys.getsizeof(str(final_results)) / 1024 / 1024
+        logger.info(f"\n  Estimated memory size: {result_size_mb:.2f} MB")
+        sys.stdout.flush()
+        logger.info(f"  Output file: {output_path}")
+        sys.stdout.flush()
+        logger.info(f"\n  Starting write operation (this may take a while for large files)...")
+        sys.stdout.flush()
+        
+        # Validate serialization before full write
+        logger.info(f"\n  Validating JSON serialization...")
+        sys.stdout.flush()
+        try:
+            # Test serialize a small sample to detect issues early
+            test_data = {
+                "config": final_results.get("config"),
+                "metadata": final_results.get("metadata"),
+            }
+            if "operator_performance" in final_results and final_results["operator_performance"]:
+                # Add a sample to test (handle both list and dict formats)
+                op_perf = final_results["operator_performance"]
+                if isinstance(op_perf, list):
+                    test_data["operator_performance_sample"] = op_perf[:1]
+                elif isinstance(op_perf, dict):
+                    # For dict, just include summary_stats for validation
+                    test_data["operator_performance_sample"] = {
+                        "summary_stats": op_perf.get("summary_stats", {})
+                    }
+            
+            json.dumps(test_data, indent=None)
+            logger.info(f"  ✓ Serialization validation passed")
+            sys.stdout.flush()
+        except Exception as e:
+            logger.error(f"  ✗ Serialization validation failed: {e}")
+            sys.stdout.flush()
+            # Try to identify problematic fields
+            for key in final_results.keys():
+                try:
+                    json.dumps({key: final_results[key]}, indent=None)
+                except Exception as field_err:
+                    logger.error(f"    Problem in field '{key}': {field_err}")
+                    sys.stdout.flush()
+            raise ValueError(f"Cannot serialize results: {e}")
+        
+        write_start = time.perf_counter()
+        
+        # Write with periodic progress updates (using a background thread)
+        write_complete = threading.Event()
+        write_error = []  # Shared error container
+        
+        def progress_reporter():
+            """Report progress every 10 seconds while writing."""
+            elapsed = 0
+            while not write_complete.is_set():
+                time.sleep(10)
+                if not write_complete.is_set():
+                    elapsed += 10
+                    logger.info(f"  ... still writing ({elapsed}s elapsed, estimated: {result_size_mb/10:.1f}-{result_size_mb/2:.1f} min) ...")
+                    sys.stdout.flush()
+        
+        # Start progress reporter thread
+        progress_thread = threading.Thread(target=progress_reporter, daemon=True)
+        progress_thread.start()
+        logger.info(f"  Background progress monitor started")
+        sys.stdout.flush()
+        
+        try:
+            # Use indent=None for faster writing (can change to indent=2 if readability is critical)
+            # For files > 1000 layers, use no indent for 5-10x faster writes
+            use_indent = None if num_operator_layers > 1000 else 2
+            
+            if use_indent is None:
+                logger.info(f"  Using compact format (no indentation) for faster writing...")
+                sys.stdout.flush()
+            
+            logger.info(f"  Opening file for writing...")
+            sys.stdout.flush()
+            
+            # Write in a thread with monitoring
+            write_thread_complete = threading.Event()
+            write_thread_error = []
+            
+            def write_json():
+                """Write JSON in separate thread."""
+                try:
+                    with open(output_path, "w") as f:
+                        logger.info(f"  File opened, starting JSON serialization...")
+                        sys.stdout.flush()
+                        json.dump(final_results, f, indent=use_indent)
+                        logger.info(f"  JSON serialization complete, flushing file buffer...")
+                        sys.stdout.flush()
+                        f.flush()
+                    write_thread_complete.set()
+                except Exception as e:
+                    write_thread_error.append(e)
+                    write_thread_complete.set()
+            
+            # Start write thread
+            write_thread = threading.Thread(target=write_json, daemon=False)
+            write_thread.start()
+            
+            # Wait for completion with extended timeout (30 minutes for very large files)
+            timeout_seconds = 1800  # 30 minutes
+            if write_thread_complete.wait(timeout=timeout_seconds):
+                # Check for errors
+                if write_thread_error:
+                    raise write_thread_error[0]
+                logger.info(f"  ✓ Write thread completed successfully")
+                sys.stdout.flush()
+            else:
+                logger.error(f"  ✗ Write operation timed out after {timeout_seconds}s!")
+                sys.stdout.flush()
+                raise TimeoutError(f"JSON write operation timed out after {timeout_seconds} seconds")
+            
+            write_thread.join(timeout=5.0)
+            
+        finally:
+            write_complete.set()
+            progress_thread.join(timeout=1.0)
+        
+        write_time = time.perf_counter() - write_start
+        
+        actual_size_mb = output_path.stat().st_size / 1024 / 1024
+        logger.info(f"\n{'='*80}")
+        sys.stdout.flush()
+        logger.info(f"✓ Results successfully saved!")
+        sys.stdout.flush()
+        logger.info(f"{'='*80}")
+        sys.stdout.flush()
+        logger.info(f"  File: {output_path}")
+        sys.stdout.flush()
+        logger.info(f"  Size: {actual_size_mb:.2f} MB")
+        sys.stdout.flush()
+        logger.info(f"  Write time: {write_time:.2f}s ({actual_size_mb/write_time:.2f} MB/s)")
+        sys.stdout.flush()
+        logger.info(f"{'='*80}")
+        sys.stdout.flush()
         
         # Print summary
         logger.info("\n" + "=" * 80)
@@ -1101,7 +1350,7 @@ def _aggregate_dp_results(rank_output_files: List[str], dp_size: int) -> Dict[st
         'config': rank_results[0]['config'],
         'metadata': {
             'timestamp': time.strftime("%Y-%m-%d %H:%M:%S"),
-            'data_parallel_size': dp_size,
+        'data_parallel_size': dp_size,
         },
         'operator_performance': aggregated_operator_perf,
         'operator_performance_per_dp_rank': per_dp_rank_operator_perf,

@@ -1,0 +1,81 @@
+{
+  "config": {
+    "model_path": "/mnt/disk1/ljm/qwen_test/models/Qwen/Qwen3-8B",
+    "tensor_parallel_size": 1,
+    "pipeline_parallel_size": 1,
+    "max_model_len": null,
+    "batch_sizes": [
+      1,
+      4,
+      8
+    ],
+    "seq_lengths": [
+      512,
+      1024
+    ],
+    "warmup_steps": 5,
+    "benchmark_steps": 0,
+    "operators_to_benchmark": [
+      "all"
+    ],
+    "output_file": "e2e_results/h100_8gpu_2min_test/tp1_pp1_dp4_e2e.json",
+    "include_per_layer_stats": true,
+    "include_summary_stats": true,
+    "verbose": true,
+    "enable_cuda_graph": false,
+    "dtype": "auto",
+    "gpu_memory_utilization": 0.5,
+    "use_trace_data": true,
+    "trace_file_path": "/mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_traceB_test_2min.jsonl",
+    "trace_time_range_minutes": [
+      0,
+      2
+    ],
+    "trace_hash_id_seed": 42,
+    "trace_realtime_replay": true,
+    "data_parallel_size": 4,
+    "enable_e2e_metrics": true
+  },
+  "metadata": {
+    "timestamp": "2025-12-02 03:06:18",
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "dp_rank": 3,
+    "dp_size": 4
+  },
+  "e2e_metrics": {
+    "num_requests": 7,
+    "num_valid_requests": 7,
+    "total_time_seconds": 107.25759747391567,
+    "num_ranks": 1,
+    "ttft_ms": {
+      "mean": 38.12166622706822,
+      "p50": 36.94295883178711,
+      "p90": 49.75948333740235,
+      "p99": 57.96910285949706
+    },
+    "tpot_ms": {
+      "mean": 15.519196094062766,
+      "p50": 15.564150618095146,
+      "p90": 15.7615693923282,
+      "p99": 15.78274496487881
+    },
+    "e2e_latency_ms": {
+      "mean": 332.9863920142608,
+      "p50": 335.25937097147107,
+      "p90": 342.41371992975473,
+      "p99": 346.48609549738467
+    },
+    "queued_time_ms": {
+      "mean": 0.19421368571264402,
+      "p50": 0.1936950720846653,
+      "p90": 0.2123802900314331,
+      "p99": 0.21850276738405228
+    },
+    "total_prompt_tokens": 6571,
+    "total_generation_tokens": 140,
+    "throughput": {
+      "tokens_per_second": 62.568994253596536
+    }
+  }
+}

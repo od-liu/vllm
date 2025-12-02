@@ -276,13 +276,22 @@ class OperatorBenchmark:
         This dramatically improves performance by reducing synchronization
         overhead from O(num_operators) to O(1) per forward pass.
         """
+        import sys
+        
         with self._pending_lock:  # 使用锁保证线程安全
             if not self._pending_events:  # 检查队列是否为空
                 return
             
+            num_pending = len(self._pending_events)
+            logger.info(f"Flushing {num_pending} pending CUDA events...")
+            
             # Single synchronization for all pending events
             if torch.cuda.is_available():  # 检查CUDA是否可用
+                import time
+                sync_start = time.perf_counter()
                 torch.cuda.synchronize()  # 同步所有待处理的CUDA事件
+                sync_time = time.perf_counter() - sync_start
+                logger.debug(f"  CUDA sync: {sync_time:.2f}s")
             
             # Increment flush count (tracks forward pass count)
             self._flush_count += 1  # 增加前向传播次数计数
@@ -302,6 +311,8 @@ class OperatorBenchmark:
             
             # Past warmup: batch process all events
             records_to_add = []  # 存储待添加的记录
+            
+            # Process events (no progress reporting for cleaner logs)
             for event in self._pending_events:
                 try:
                     # Calculate elapsed time
@@ -334,8 +345,7 @@ class OperatorBenchmark:
                         "/tmp/vllm_operator_benchmark.json"
                     )
                     try:
-                        # Log before save for debugging
-                        logger.info(
+                        logger.debug(
                             f"Auto-saving {len(self._records)} records after flush "
                             f"({len(records_to_add)} new) to {output_file}"
                         )
@@ -345,6 +355,7 @@ class OperatorBenchmark:
             
             # Clear the queue
             self._pending_events.clear()  # 清空队列
+            logger.info(f"✓ Flush #{self._flush_count} complete: processed {len(records_to_add)} events, total {len(self._records)} records")
     
     # 计算统计信息，返回类型为BenchmarkResults
     def get_statistics(self) -> BenchmarkResults:
@@ -487,8 +498,8 @@ class OperatorBenchmark:
         with open(output_file_path, "w") as f:
             json.dump(output_dict, f, indent=2)
         
-        # Log save operation for debugging
-        logger.info(
+        # Use DEBUG level to reduce log spam during auto-save
+        logger.debug(
             f"[{tp_rank_info}] Saved benchmark results to {output_file_path}: "
             f"{total_records} records, {num_layers} layers, "
             f"{results.total_forward_time_ms:.2f}ms total"

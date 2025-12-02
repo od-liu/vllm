@@ -1,0 +1,8219 @@
+{
+  "config": {
+    "warmup_steps": 5,
+    "benchmark_steps": 0,
+    "total_records": 214508
+  },
+  "per_layer_stats": [
+    {
+      "layer_name": "model.embed_tokens",
+      "operator_type": "embedding",
+      "num_calls": 658,
+      "avg_time_ms": 0.7412066151668235,
+      "std_time_ms": 3.802217178175003,
+      "min_time_ms": 0.3720319867134094,
+      "max_time_ms": 98.03193664550781,
+      "total_time_ms": 487.7139527797699,
+      "avg_input_shapes": [
+        [
+          25
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.0.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.024586601801341156,
+      "std_time_ms": 0.022398348674831422,
+      "min_time_ms": 0.006047999951988459,
+      "max_time_ms": 0.37939199805259705,
+      "total_time_ms": 16.17798398528248,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.0.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.3005458010434199,
+      "std_time_ms": 0.7628864521007344,
+      "min_time_ms": 0.05344000086188316,
+      "max_time_ms": 10.336640357971191,
+      "total_time_ms": 197.75913708657026,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.0.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.11178849719600656,
+      "std_time_ms": 0.49755925952089836,
+      "min_time_ms": 0.0163199994713068,
+      "max_time_ms": 5.714687824249268,
+      "total_time_ms": 73.55683115497231,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.0.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01329483282766489,
+      "std_time_ms": 0.009544231583444777,
+      "min_time_ms": 0.006047999951988459,
+      "max_time_ms": 0.043296001851558685,
+      "total_time_ms": 8.748000000603497,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.0.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.1416604007710349,
+      "std_time_ms": 0.17849682517691734,
+      "min_time_ms": 0.019200000911951065,
+      "max_time_ms": 4.542111873626709,
+      "total_time_ms": 93.21254370734096,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.0.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.021696389073896642,
+      "std_time_ms": 0.011632747935854322,
+      "min_time_ms": 0.0054720002226531506,
+      "max_time_ms": 0.06374400109052658,
+      "total_time_ms": 14.276224010623991,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.0.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.5000903093026764,
+      "std_time_ms": 0.9022687716403894,
+      "min_time_ms": 0.08073599636554718,
+      "max_time_ms": 8.48639965057373,
+      "total_time_ms": 329.0594235211611,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.0.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.02742910636857854,
+      "std_time_ms": 0.020494896841515148,
+      "min_time_ms": 0.005504000000655651,
+      "max_time_ms": 0.13468800485134125,
+      "total_time_ms": 18.04835199052468,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.0.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.1912793201312287,
+      "std_time_ms": 0.6288435176425669,
+      "min_time_ms": 0.012223999947309494,
+      "max_time_ms": 5.730016231536865,
+      "total_time_ms": 125.86179264634848,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.1.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011272364746818834,
+      "std_time_ms": 0.007379671132602473,
+      "min_time_ms": 0.006175999995321035,
+      "max_time_ms": 0.0469760000705719,
+      "total_time_ms": 7.417216003406793,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.1.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.17297668024716406,
+      "std_time_ms": 0.09677294591760777,
+      "min_time_ms": 0.04870399832725525,
+      "max_time_ms": 1.2434879541397095,
+      "total_time_ms": 113.81865560263395,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.1.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.03010412162073568,
+      "std_time_ms": 0.013794420908344119,
+      "min_time_ms": 0.016224000602960587,
+      "max_time_ms": 0.07094399631023407,
+      "total_time_ms": 19.808512026444077,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.1.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011257483271491292,
+      "std_time_ms": 0.007560864243038725,
+      "min_time_ms": 0.006047999951988459,
+      "max_time_ms": 0.03868800029158592,
+      "total_time_ms": 7.40742399264127,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.1.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.07970956833551901,
+      "std_time_ms": 0.04877444763261318,
+      "min_time_ms": 0.018271999433636665,
+      "max_time_ms": 0.1855359971523285,
+      "total_time_ms": 52.44889596477151,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.1.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.017144656534898335,
+      "std_time_ms": 0.011223338358772797,
+      "min_time_ms": 0.005504000000655651,
+      "max_time_ms": 0.04995200037956238,
+      "total_time_ms": 11.281183999963105,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.1.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.30584335622680586,
+      "std_time_ms": 0.234346730105398,
+      "min_time_ms": 0.05740800127387047,
+      "max_time_ms": 1.0985280275344849,
+      "total_time_ms": 201.24492839723825,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.1.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.019725033441575463,
+      "std_time_ms": 0.014931982722635944,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.06860800087451935,
+      "total_time_ms": 12.979072004556656,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.1.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.025300911892386646,
+      "std_time_ms": 0.015072125090425268,
+      "min_time_ms": 0.01196799986064434,
+      "max_time_ms": 0.07702399790287018,
+      "total_time_ms": 16.648000025190413,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.10.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010841434655886563,
+      "std_time_ms": 0.00629867084771337,
+      "min_time_ms": 0.006175999995321035,
+      "max_time_ms": 0.035232000052928925,
+      "total_time_ms": 7.133664003573358,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.10.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15937648599225698,
+      "std_time_ms": 0.08790504341647996,
+      "min_time_ms": 0.04604800045490265,
+      "max_time_ms": 0.3548159897327423,
+      "total_time_ms": 104.8697277829051,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.10.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02762237079384932,
+      "std_time_ms": 0.011370915255585421,
+      "min_time_ms": 0.0163199994713068,
+      "max_time_ms": 0.06825599819421768,
+      "total_time_ms": 18.175519982352853,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.10.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011038784194584811,
+      "std_time_ms": 0.006647031577213479,
+      "min_time_ms": 0.006047999951988459,
+      "max_time_ms": 0.040383998304605484,
+      "total_time_ms": 7.263520000036806,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.10.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06424612756592071,
+      "std_time_ms": 0.039840262573427467,
+      "min_time_ms": 0.018079999834299088,
+      "max_time_ms": 0.1546880006790161,
+      "total_time_ms": 42.27395193837583,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.10.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015431781147966178,
+      "std_time_ms": 0.010024556485081373,
+      "min_time_ms": 0.005408000200986862,
+      "max_time_ms": 0.04399999976158142,
+      "total_time_ms": 10.154111995361745,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.10.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.28305220591487495,
+      "std_time_ms": 0.2122824612323361,
+      "min_time_ms": 0.0517439991235733,
+      "max_time_ms": 0.7053760290145874,
+      "total_time_ms": 186.2483514919877,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.10.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016728802419927163,
+      "std_time_ms": 0.012136627408393727,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.05974400043487549,
+      "total_time_ms": 11.007551992312074,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.10.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02200423100380097,
+      "std_time_ms": 0.012357274665139847,
+      "min_time_ms": 0.012000000104308128,
+      "max_time_ms": 0.06278400123119354,
+      "total_time_ms": 14.478784000501037,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.11.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01122387840998526,
+      "std_time_ms": 0.006470123152329876,
+      "min_time_ms": 0.006207999773323536,
+      "max_time_ms": 0.03292800113558769,
+      "total_time_ms": 7.385311993770301,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.11.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15626091170931478,
+      "std_time_ms": 0.08751176230931221,
+      "min_time_ms": 0.045343998819589615,
+      "max_time_ms": 0.3054080009460449,
+      "total_time_ms": 102.81967990472913,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.11.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02815756837817583,
+      "std_time_ms": 0.011467591436298727,
+      "min_time_ms": 0.016416000202298164,
+      "max_time_ms": 0.07187200337648392,
+      "total_time_ms": 18.527679992839694,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.11.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011227817629183725,
+      "std_time_ms": 0.006707224549862544,
+      "min_time_ms": 0.00598399993032217,
+      "max_time_ms": 0.03347200155258179,
+      "total_time_ms": 7.387904000002891,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.11.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06485607282550139,
+      "std_time_ms": 0.04125010222129661,
+      "min_time_ms": 0.01849599927663803,
+      "max_time_ms": 0.2640320062637329,
+      "total_time_ms": 42.675295919179916,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.11.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015354164140044193,
+      "std_time_ms": 0.01000704799588539,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.055615998804569244,
+      "total_time_ms": 10.10304000414908,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.11.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.28160855958753445,
+      "std_time_ms": 0.21483138697512225,
+      "min_time_ms": 0.0522879995405674,
+      "max_time_ms": 1.103551983833313,
+      "total_time_ms": 185.29843220859766,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.11.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016705215793233193,
+      "std_time_ms": 0.01215453176440807,
+      "min_time_ms": 0.005280000157654285,
+      "max_time_ms": 0.05686400085687637,
+      "total_time_ms": 10.992031991947442,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.11.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02225206078859584,
+      "std_time_ms": 0.01239437897644594,
+      "min_time_ms": 0.011872000060975552,
+      "max_time_ms": 0.06313599646091461,
+      "total_time_ms": 14.641855998896062,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.12.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01140055926530806,
+      "std_time_ms": 0.006633611516192491,
+      "min_time_ms": 0.006240000016987324,
+      "max_time_ms": 0.030432000756263733,
+      "total_time_ms": 7.501567996572703,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.12.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.16680170232741484,
+      "std_time_ms": 0.09606251068177536,
+      "min_time_ms": 0.02848000079393387,
+      "max_time_ms": 0.38495999574661255,
+      "total_time_ms": 109.75552013143897,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.12.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.029321677829945703,
+      "std_time_ms": 0.013011899210575164,
+      "min_time_ms": 0.01603199914097786,
+      "max_time_ms": 0.07238399982452393,
+      "total_time_ms": 19.293664012104273,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.12.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011822832813401534,
+      "std_time_ms": 0.007429370818144669,
+      "min_time_ms": 0.005919999908655882,
+      "max_time_ms": 0.04054399952292442,
+      "total_time_ms": 7.779423991218209,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.12.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.07385434646521749,
+      "std_time_ms": 0.04531146372483678,
+      "min_time_ms": 0.018303999677300453,
+      "max_time_ms": 0.17737600207328796,
+      "total_time_ms": 48.59615997411311,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.12.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.017189203667394976,
+      "std_time_ms": 0.011195764009545209,
+      "min_time_ms": 0.005280000157654285,
+      "max_time_ms": 0.047231998294591904,
+      "total_time_ms": 11.310496013145894,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.12.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.850552841222712,
+      "std_time_ms": 10.388674490817209,
+      "min_time_ms": 0.05827200040221214,
+      "max_time_ms": 259.1286315917969,
+      "total_time_ms": 559.6637695245445,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.12.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.02355199998830612,
+      "std_time_ms": 0.019667812726765977,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.12771199643611908,
+      "total_time_ms": 15.497215992305428,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.12.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02276906993177841,
+      "std_time_ms": 0.012597685735420465,
+      "min_time_ms": 0.011872000060975552,
+      "max_time_ms": 0.06230400130152702,
+      "total_time_ms": 14.982048015110195,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.13.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011530844964607871,
+      "std_time_ms": 0.006831688206137397,
+      "min_time_ms": 0.006047999951988459,
+      "max_time_ms": 0.03622400015592575,
+      "total_time_ms": 7.587295986711979,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.13.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.1602826018316677,
+      "std_time_ms": 0.09185055836897871,
+      "min_time_ms": 0.04614400118589401,
+      "max_time_ms": 0.4758720099925995,
+      "total_time_ms": 105.46595200523734,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.13.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02818285710939792,
+      "std_time_ms": 0.011613553265287336,
+      "min_time_ms": 0.016063999384641647,
+      "max_time_ms": 0.06518399715423584,
+      "total_time_ms": 18.544319977983832,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.13.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01125320365884565,
+      "std_time_ms": 0.00662381264582419,
+      "min_time_ms": 0.0060800001956522465,
+      "max_time_ms": 0.0318400003015995,
+      "total_time_ms": 7.404608007520437,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.13.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06586684500034276,
+      "std_time_ms": 0.04158114420533035,
+      "min_time_ms": 0.018400000408291817,
+      "max_time_ms": 0.15568000078201294,
+      "total_time_ms": 43.340384010225534,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.13.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015271003025450878,
+      "std_time_ms": 0.010049029794625127,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.045632001012563705,
+      "total_time_ms": 10.048319990746677,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.13.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2961882064034058,
+      "std_time_ms": 0.23319300100260457,
+      "min_time_ms": 0.05183999985456467,
+      "max_time_ms": 1.9993599653244019,
+      "total_time_ms": 194.89183981344104,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.13.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01689911248391681,
+      "std_time_ms": 0.012580130631328706,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.06169600039720535,
+      "total_time_ms": 11.11961601441726,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.13.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02314699087207033,
+      "std_time_ms": 0.012922951515582738,
+      "min_time_ms": 0.01196799986064434,
+      "max_time_ms": 0.06467200070619583,
+      "total_time_ms": 15.230719993822277,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.14.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011157933120137381,
+      "std_time_ms": 0.006368678366370806,
+      "min_time_ms": 0.006111999973654747,
+      "max_time_ms": 0.03251200169324875,
+      "total_time_ms": 7.341919993050396,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.14.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15778679660546924,
+      "std_time_ms": 0.08968908259005016,
+      "min_time_ms": 0.04620800167322159,
+      "max_time_ms": 0.36032000184059143,
+      "total_time_ms": 103.82371216639876,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.14.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027977386056403077,
+      "std_time_ms": 0.01160648205188035,
+      "min_time_ms": 0.016256000846624374,
+      "max_time_ms": 0.07868800312280655,
+      "total_time_ms": 18.409120025113225,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.14.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01125524620706708,
+      "std_time_ms": 0.006591753141226397,
+      "min_time_ms": 0.005919999908655882,
+      "max_time_ms": 0.03999999910593033,
+      "total_time_ms": 7.405952004250139,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.14.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.0630319756243412,
+      "std_time_ms": 0.040270924512896746,
+      "min_time_ms": 0.018079999834299088,
+      "max_time_ms": 0.18953600525856018,
+      "total_time_ms": 41.4750399608165,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.14.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.014867696037804736,
+      "std_time_ms": 0.009878814770224956,
+      "min_time_ms": 0.005280000157654285,
+      "max_time_ms": 0.0498879998922348,
+      "total_time_ms": 9.782943992875516,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.14.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.28690392706305423,
+      "std_time_ms": 0.21646665138567767,
+      "min_time_ms": 0.05167999863624573,
+      "max_time_ms": 0.6350399851799011,
+      "total_time_ms": 188.78278400748968,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.14.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016118127672216858,
+      "std_time_ms": 0.0119224446487132,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.0530879981815815,
+      "total_time_ms": 10.605728008318692,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.14.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.022428595793566534,
+      "std_time_ms": 0.012438947480283026,
+      "min_time_ms": 0.01190400030463934,
+      "max_time_ms": 0.06172800064086914,
+      "total_time_ms": 14.758016032166779,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.15.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.0113150151856923,
+      "std_time_ms": 0.006373545637251903,
+      "min_time_ms": 0.006207999773323536,
+      "max_time_ms": 0.03299200162291527,
+      "total_time_ms": 7.445279992185533,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.15.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.1581652033904222,
+      "std_time_ms": 0.09246993105207796,
+      "min_time_ms": 0.04483199864625931,
+      "max_time_ms": 0.8155840039253235,
+      "total_time_ms": 104.07270383089781,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.15.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02786096046738168,
+      "std_time_ms": 0.011243001621352361,
+      "min_time_ms": 0.01587199978530407,
+      "max_time_ms": 0.0631679967045784,
+      "total_time_ms": 18.332511987537146,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.15.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011228984785138837,
+      "std_time_ms": 0.006594744557312866,
+      "min_time_ms": 0.006047999951988459,
+      "max_time_ms": 0.034752000123262405,
+      "total_time_ms": 7.388671988621354,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.15.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06157237680566619,
+      "std_time_ms": 0.039189491805330635,
+      "min_time_ms": 0.018239999189972878,
+      "max_time_ms": 0.15958400070667267,
+      "total_time_ms": 40.51462393812835,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.15.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01474232217127112,
+      "std_time_ms": 0.009665258447833999,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.048928000032901764,
+      "total_time_ms": 9.700447988696396,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.15.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2848658475821051,
+      "std_time_ms": 0.21500790996935648,
+      "min_time_ms": 0.05222399905323982,
+      "max_time_ms": 1.082527995109558,
+      "total_time_ms": 187.44172770902514,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.15.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016054614004042102,
+      "std_time_ms": 0.01177759013821374,
+      "min_time_ms": 0.005408000200986862,
+      "max_time_ms": 0.06124800071120262,
+      "total_time_ms": 10.563936014659703,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.15.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.022407294846901325,
+      "std_time_ms": 0.012336512374704523,
+      "min_time_ms": 0.011872000060975552,
+      "max_time_ms": 0.061216000467538834,
+      "total_time_ms": 14.744000009261072,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.16.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011224510649921186,
+      "std_time_ms": 0.006437895842236546,
+      "min_time_ms": 0.006271999794989824,
+      "max_time_ms": 0.03500799834728241,
+      "total_time_ms": 7.38572800764814,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.16.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15827875953496046,
+      "std_time_ms": 0.09098815782052734,
+      "min_time_ms": 0.04588799923658371,
+      "max_time_ms": 0.5591359734535217,
+      "total_time_ms": 104.14742377400398,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.16.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027678832813735066,
+      "std_time_ms": 0.011446913123322959,
+      "min_time_ms": 0.016063999384641647,
+      "max_time_ms": 0.060896001756191254,
+      "total_time_ms": 18.212671991437674,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.16.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011245033443313783,
+      "std_time_ms": 0.006689718297474869,
+      "min_time_ms": 0.00595200015231967,
+      "max_time_ms": 0.029983999207615852,
+      "total_time_ms": 7.399232005700469,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.16.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.061578164083775595,
+      "std_time_ms": 0.039662267927518285,
+      "min_time_ms": 0.018239999189972878,
+      "max_time_ms": 0.1517760008573532,
+      "total_time_ms": 40.51843196712434,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.16.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.014855003041019919,
+      "std_time_ms": 0.009927722664774217,
+      "min_time_ms": 0.005280000157654285,
+      "max_time_ms": 0.044415999203920364,
+      "total_time_ms": 9.774592000991106,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.16.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.29035559929001475,
+      "std_time_ms": 0.22971076781218505,
+      "min_time_ms": 0.05209600180387497,
+      "max_time_ms": 1.8499200344085693,
+      "total_time_ms": 191.0539843328297,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.16.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016042358675790458,
+      "std_time_ms": 0.011863935988448775,
+      "min_time_ms": 0.005408000200986862,
+      "max_time_ms": 0.056671999394893646,
+      "total_time_ms": 10.555872008670121,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.16.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02224106993809297,
+      "std_time_ms": 0.012420989793243162,
+      "min_time_ms": 0.011839999817311764,
+      "max_time_ms": 0.06015999987721443,
+      "total_time_ms": 14.634624019265175,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.17.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011391999989062955,
+      "std_time_ms": 0.006554363566881464,
+      "min_time_ms": 0.006144000217318535,
+      "max_time_ms": 0.03766399994492531,
+      "total_time_ms": 7.495935992803425,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.17.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.1567610453950145,
+      "std_time_ms": 0.088672360619734,
+      "min_time_ms": 0.04556800052523613,
+      "max_time_ms": 0.3503359854221344,
+      "total_time_ms": 103.14876786991954,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.17.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027742200664111545,
+      "std_time_ms": 0.011230139184794043,
+      "min_time_ms": 0.016416000202298164,
+      "max_time_ms": 0.060256000608205795,
+      "total_time_ms": 18.254368036985397,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.17.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011203793316264282,
+      "std_time_ms": 0.006637188127020291,
+      "min_time_ms": 0.006016000173985958,
+      "max_time_ms": 0.03718400001525879,
+      "total_time_ms": 7.372096002101898,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.17.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06150137386242307,
+      "std_time_ms": 0.039298526686157846,
+      "min_time_ms": 0.01820800080895424,
+      "max_time_ms": 0.15030400454998016,
+      "total_time_ms": 40.46790400147438,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.17.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.014930091155721243,
+      "std_time_ms": 0.00980784648790987,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.042847998440265656,
+      "total_time_ms": 9.823999980464578,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.17.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.28456462060857146,
+      "std_time_ms": 0.21414489020953673,
+      "min_time_ms": 0.05135999992489815,
+      "max_time_ms": 0.6772800087928772,
+      "total_time_ms": 187.24352036044002,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.17.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016299136808866743,
+      "std_time_ms": 0.012058997070964857,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.057631999254226685,
+      "total_time_ms": 10.724832020234317,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.17.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.022406711265739156,
+      "std_time_ms": 0.012302885325426068,
+      "min_time_ms": 0.011935999616980553,
+      "max_time_ms": 0.06063999980688095,
+      "total_time_ms": 14.743616012856364,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.18.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011093592709977756,
+      "std_time_ms": 0.00626389383681798,
+      "min_time_ms": 0.006144000217318535,
+      "max_time_ms": 0.02956799976527691,
+      "total_time_ms": 7.299584003165364,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.18.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15721069924012507,
+      "std_time_ms": 0.08785568067917018,
+      "min_time_ms": 0.04524800181388855,
+      "max_time_ms": 0.3154880106449127,
+      "total_time_ms": 103.44464010000229,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.18.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027603647442347737,
+      "std_time_ms": 0.011296495056834398,
+      "min_time_ms": 0.016256000846624374,
+      "max_time_ms": 0.07875200361013412,
+      "total_time_ms": 18.16320001706481,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.18.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01105852886867401,
+      "std_time_ms": 0.00662064943024937,
+      "min_time_ms": 0.006047999951988459,
+      "max_time_ms": 0.03497600182890892,
+      "total_time_ms": 7.276511995587498,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.18.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06075691189163996,
+      "std_time_ms": 0.038580749824416984,
+      "min_time_ms": 0.018112000077962875,
+      "max_time_ms": 0.14342400431632996,
+      "total_time_ms": 39.97804802469909,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.18.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01470896049818777,
+      "std_time_ms": 0.009800655797739494,
+      "min_time_ms": 0.005408000200986862,
+      "max_time_ms": 0.05673599988222122,
+      "total_time_ms": 9.678496007807553,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.18.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.28212581167852446,
+      "std_time_ms": 0.21127743053900583,
+      "min_time_ms": 0.05135999992489815,
+      "max_time_ms": 0.6589440107345581,
+      "total_time_ms": 185.63878408446908,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.18.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016264559260900712,
+      "std_time_ms": 0.011858873879887374,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.0642239972949028,
+      "total_time_ms": 10.702079993672669,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.18.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.022208486322743824,
+      "std_time_ms": 0.01232220517162107,
+      "min_time_ms": 0.011839999817311764,
+      "max_time_ms": 0.05648000165820122,
+      "total_time_ms": 14.613184000365436,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.19.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011017823721335968,
+      "std_time_ms": 0.006568506775240725,
+      "min_time_ms": 0.00598399993032217,
+      "max_time_ms": 0.0390079990029335,
+      "total_time_ms": 7.249728008639067,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.19.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15862453516040528,
+      "std_time_ms": 0.0983848771709395,
+      "min_time_ms": 0.044895999133586884,
+      "max_time_ms": 1.2100160121917725,
+      "total_time_ms": 104.37494413554668,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.19.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027808486370760437,
+      "std_time_ms": 0.011278515673638618,
+      "min_time_ms": 0.015807999297976494,
+      "max_time_ms": 0.07859200239181519,
+      "total_time_ms": 18.297984031960368,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.19.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011248826761914014,
+      "std_time_ms": 0.0067835902814077685,
+      "min_time_ms": 0.0060800001956522465,
+      "max_time_ms": 0.03516799956560135,
+      "total_time_ms": 7.401728009339422,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.19.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06103178110868192,
+      "std_time_ms": 0.03879028634081913,
+      "min_time_ms": 0.018239999189972878,
+      "max_time_ms": 0.1518079936504364,
+      "total_time_ms": 40.1589119695127,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.19.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.014784826717330965,
+      "std_time_ms": 0.009669746741779903,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.048608001321554184,
+      "total_time_ms": 9.728415980003774,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.19.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.28484041384197656,
+      "std_time_ms": 0.21482952073583642,
+      "min_time_ms": 0.05135999992489815,
+      "max_time_ms": 0.714847981929779,
+      "total_time_ms": 187.4249923080206,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.19.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016351416432454413,
+      "std_time_ms": 0.011906738778234121,
+      "min_time_ms": 0.005375999957323074,
+      "max_time_ms": 0.06060799956321716,
+      "total_time_ms": 10.759232012555003,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.19.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.022162820632912014,
+      "std_time_ms": 0.012250584952047687,
+      "min_time_ms": 0.012000000104308128,
+      "max_time_ms": 0.06409599632024765,
+      "total_time_ms": 14.583135976456106,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.2.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010839051653356448,
+      "std_time_ms": 0.006923843560881852,
+      "min_time_ms": 0.006175999995321035,
+      "max_time_ms": 0.03951999917626381,
+      "total_time_ms": 7.132095987908542,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.2.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.17137882042687533,
+      "std_time_ms": 0.08477367697427958,
+      "min_time_ms": 0.04742399975657463,
+      "max_time_ms": 0.42374399304389954,
+      "total_time_ms": 112.76726384088397,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.2.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.028140984755858644,
+      "std_time_ms": 0.012528614669280657,
+      "min_time_ms": 0.01651199907064438,
+      "max_time_ms": 0.0631679967045784,
+      "total_time_ms": 18.516767969354987,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.2.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010367124619551207,
+      "std_time_ms": 0.00684851850940104,
+      "min_time_ms": 0.006016000173985958,
+      "max_time_ms": 0.03142400085926056,
+      "total_time_ms": 6.821567999664694,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.2.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.07382098482044182,
+      "std_time_ms": 0.04521132162002988,
+      "min_time_ms": 0.01817600056529045,
+      "max_time_ms": 0.16233600676059723,
+      "total_time_ms": 48.574208011850715,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.2.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01655484498252011,
+      "std_time_ms": 0.011087399199689398,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.06883200258016586,
+      "total_time_ms": 10.893087998498231,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.2.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.29908026745797656,
+      "std_time_ms": 0.22385199532759895,
+      "min_time_ms": 0.05462399870157242,
+      "max_time_ms": 1.587839961051941,
+      "total_time_ms": 196.79481598734856,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.2.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.018881896670658628,
+      "std_time_ms": 0.014006957530993925,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.06729599833488464,
+      "total_time_ms": 12.424288009293377,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.2.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.023624802448455596,
+      "std_time_ms": 0.01403832672287038,
+      "min_time_ms": 0.011807999573647976,
+      "max_time_ms": 0.06467200070619583,
+      "total_time_ms": 15.545120011083782,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.20.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011282091169819054,
+      "std_time_ms": 0.006485893821642451,
+      "min_time_ms": 0.006304000038653612,
+      "max_time_ms": 0.03328000009059906,
+      "total_time_ms": 7.423615989740938,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.20.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15930373230694275,
+      "std_time_ms": 0.11134410487513577,
+      "min_time_ms": 0.04479999840259552,
+      "max_time_ms": 1.8332799673080444,
+      "total_time_ms": 104.82185585796833,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.20.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027508571415596095,
+      "std_time_ms": 0.011152860694526636,
+      "min_time_ms": 0.01616000011563301,
+      "max_time_ms": 0.07913599908351898,
+      "total_time_ms": 18.10063999146223,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.20.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011296340413702975,
+      "std_time_ms": 0.006732468448462024,
+      "min_time_ms": 0.00598399993032217,
+      "max_time_ms": 0.035551998764276505,
+      "total_time_ms": 7.432991992216557,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.20.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.0604411914978618,
+      "std_time_ms": 0.03829257387768121,
+      "min_time_ms": 0.018079999834299088,
+      "max_time_ms": 0.14796799421310425,
+      "total_time_ms": 39.77030400559306,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.20.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.014654492403841987,
+      "std_time_ms": 0.009600900299612808,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.04342399910092354,
+      "total_time_ms": 9.642656001728028,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.20.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2848539816209973,
+      "std_time_ms": 0.21504253042832003,
+      "min_time_ms": 0.051392000168561935,
+      "max_time_ms": 0.7343360185623169,
+      "total_time_ms": 187.4339199066162,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.20.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015985410344167002,
+      "std_time_ms": 0.011635529093344412,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.05724800005555153,
+      "total_time_ms": 10.518400006461889,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.20.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02204128871969086,
+      "std_time_ms": 0.012232854265533201,
+      "min_time_ms": 0.011839999817311764,
+      "max_time_ms": 0.06387200206518173,
+      "total_time_ms": 14.503167977556586,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.21.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011256316110582337,
+      "std_time_ms": 0.006445241449832141,
+      "min_time_ms": 0.006111999973654747,
+      "max_time_ms": 0.03033600002527237,
+      "total_time_ms": 7.406656000763178,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.21.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15554801235400073,
+      "std_time_ms": 0.09008359003187116,
+      "min_time_ms": 0.04464000090956688,
+      "max_time_ms": 0.35235199332237244,
+      "total_time_ms": 102.35059212893248,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.21.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027852303979742855,
+      "std_time_ms": 0.011267756165484257,
+      "min_time_ms": 0.016543999314308167,
+      "max_time_ms": 0.08691199868917465,
+      "total_time_ms": 18.326816018670797,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.21.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011311319154208826,
+      "std_time_ms": 0.0066331811588400715,
+      "min_time_ms": 0.006207999773323536,
+      "max_time_ms": 0.039712000638246536,
+      "total_time_ms": 7.442848003469408,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.21.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06017240122141809,
+      "std_time_ms": 0.03859667306566084,
+      "min_time_ms": 0.018239999189972878,
+      "max_time_ms": 0.1982399970293045,
+      "total_time_ms": 39.593440003693104,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.21.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.014466772013057964,
+      "std_time_ms": 0.009376998303349971,
+      "min_time_ms": 0.005408000200986862,
+      "max_time_ms": 0.046271998435258865,
+      "total_time_ms": 9.51913598459214,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.21.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2853243043334832,
+      "std_time_ms": 0.21591898492625258,
+      "min_time_ms": 0.051231998950242996,
+      "max_time_ms": 0.7205439805984497,
+      "total_time_ms": 187.74339225143194,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.21.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015675914918262184,
+      "std_time_ms": 0.011322199145070827,
+      "min_time_ms": 0.005375999957323074,
+      "max_time_ms": 0.05369599908590317,
+      "total_time_ms": 10.314752016216516,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.21.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02218942250773356,
+      "std_time_ms": 0.012055660536653617,
+      "min_time_ms": 0.011935999616980553,
+      "max_time_ms": 0.06083200126886368,
+      "total_time_ms": 14.600640010088682,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.22.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.0111886687013448,
+      "std_time_ms": 0.00641284867922812,
+      "min_time_ms": 0.006111999973654747,
+      "max_time_ms": 0.03292800113558769,
+      "total_time_ms": 7.362144005484879,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.22.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.16779394512911155,
+      "std_time_ms": 0.15288988270451068,
+      "min_time_ms": 0.04620800167322159,
+      "max_time_ms": 3.044640064239502,
+      "total_time_ms": 110.4084158949554,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.22.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.028475088203229623,
+      "std_time_ms": 0.012238921933360146,
+      "min_time_ms": 0.016127999871969223,
+      "max_time_ms": 0.08102399855852127,
+      "total_time_ms": 18.73660803772509,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.22.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011595963523086263,
+      "std_time_ms": 0.007134353270434665,
+      "min_time_ms": 0.006016000173985958,
+      "max_time_ms": 0.04982399940490723,
+      "total_time_ms": 7.630143998190761,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.22.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06493257157685728,
+      "std_time_ms": 0.041833432121739136,
+      "min_time_ms": 0.01820800080895424,
+      "max_time_ms": 0.24569599330425262,
+      "total_time_ms": 42.72563209757209,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.22.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015533957447811372,
+      "std_time_ms": 0.010315811154808256,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.05289600044488907,
+      "total_time_ms": 10.221344000659883,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.22.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.33364153221408105,
+      "std_time_ms": 0.27492763088533045,
+      "min_time_ms": 0.054207999259233475,
+      "max_time_ms": 2.4745919704437256,
+      "total_time_ms": 219.53612819686532,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.22.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.018090455979674964,
+      "std_time_ms": 0.013029787948927838,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.06598400324583054,
+      "total_time_ms": 11.903520034626126,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.22.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.022146139813354948,
+      "std_time_ms": 0.012016977674892458,
+      "min_time_ms": 0.011839999817311764,
+      "max_time_ms": 0.05875200033187866,
+      "total_time_ms": 14.572159997187555,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.23.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011454297869401138,
+      "std_time_ms": 0.006577023739936418,
+      "min_time_ms": 0.006271999794989824,
+      "max_time_ms": 0.03471999987959862,
+      "total_time_ms": 7.5369279980659485,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.23.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15634631013956293,
+      "std_time_ms": 0.09231440151838795,
+      "min_time_ms": 0.04566400125622749,
+      "max_time_ms": 0.4168640077114105,
+      "total_time_ms": 102.87587207183242,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.23.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.028079124631807433,
+      "std_time_ms": 0.011403109272670058,
+      "min_time_ms": 0.016063999384641647,
+      "max_time_ms": 0.07865600287914276,
+      "total_time_ms": 18.476064007729292,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.23.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011528413383273187,
+      "std_time_ms": 0.006879755885537473,
+      "min_time_ms": 0.006016000173985958,
+      "max_time_ms": 0.03417599946260452,
+      "total_time_ms": 7.585696006193757,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.23.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06018105785625684,
+      "std_time_ms": 0.038897768866873635,
+      "min_time_ms": 0.018112000077962875,
+      "max_time_ms": 0.14867199957370758,
+      "total_time_ms": 39.599136069417,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.23.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.014599343450417272,
+      "std_time_ms": 0.009645700696070037,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.05392000079154968,
+      "total_time_ms": 9.606367990374565,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.23.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.291574565756013,
+      "std_time_ms": 0.223537145527548,
+      "min_time_ms": 0.05113599821925163,
+      "max_time_ms": 0.8912960290908813,
+      "total_time_ms": 191.85606426745653,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.23.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01583897872292932,
+      "std_time_ms": 0.011466199692714188,
+      "min_time_ms": 0.005408000200986862,
+      "max_time_ms": 0.06019200012087822,
+      "total_time_ms": 10.422047999687493,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.23.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.022655708219935285,
+      "std_time_ms": 0.01248003056498212,
+      "min_time_ms": 0.011935999616980553,
+      "max_time_ms": 0.06265600025653839,
+      "total_time_ms": 14.907456008717418,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.24.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011442674788162339,
+      "std_time_ms": 0.006522461940600006,
+      "min_time_ms": 0.005919999908655882,
+      "max_time_ms": 0.030559999868273735,
+      "total_time_ms": 7.529280010610819,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.24.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15714339221230395,
+      "std_time_ms": 0.09313892434716087,
+      "min_time_ms": 0.04566400125622749,
+      "max_time_ms": 0.6033279895782471,
+      "total_time_ms": 103.40035207569599,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.24.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027676206659582248,
+      "std_time_ms": 0.011140255013803828,
+      "min_time_ms": 0.01571200042963028,
+      "max_time_ms": 0.07823999971151352,
+      "total_time_ms": 18.21094398200512,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.24.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011378577513348503,
+      "std_time_ms": 0.00665579542805801,
+      "min_time_ms": 0.006016000173985958,
+      "max_time_ms": 0.03977600112557411,
+      "total_time_ms": 7.487104003783315,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.24.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.05863552589796053,
+      "std_time_ms": 0.03786454062952338,
+      "min_time_ms": 0.017983999103307724,
+      "max_time_ms": 0.14688000082969666,
+      "total_time_ms": 38.58217604085803,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.24.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.014347720352683703,
+      "std_time_ms": 0.009440058778785794,
+      "min_time_ms": 0.005408000200986862,
+      "max_time_ms": 0.05251200124621391,
+      "total_time_ms": 9.440799992065877,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.24.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.29105668066007206,
+      "std_time_ms": 0.23308895414286565,
+      "min_time_ms": 0.050912000238895416,
+      "max_time_ms": 2.330080032348633,
+      "total_time_ms": 191.51529587432742,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.24.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015740109446223564,
+      "std_time_ms": 0.011398218367718973,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.06140799820423126,
+      "total_time_ms": 10.356992015615106,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.24.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.022233920964471836,
+      "std_time_ms": 0.012162910632080508,
+      "min_time_ms": 0.011744000017642975,
+      "max_time_ms": 0.061503998935222626,
+      "total_time_ms": 14.629919994622469,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.25.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011501665623422632,
+      "std_time_ms": 0.00657233845359038,
+      "min_time_ms": 0.006111999973654747,
+      "max_time_ms": 0.03814399987459183,
+      "total_time_ms": 7.568095980212092,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.25.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.1590029420642505,
+      "std_time_ms": 0.09405407758213098,
+      "min_time_ms": 0.04438399896025658,
+      "max_time_ms": 0.4631359875202179,
+      "total_time_ms": 104.62393587827682,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.25.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02777551373008265,
+      "std_time_ms": 0.011211769500964593,
+      "min_time_ms": 0.016448000445961952,
+      "max_time_ms": 0.07999999821186066,
+      "total_time_ms": 18.276288034394383,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.25.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011370504570071866,
+      "std_time_ms": 0.006618591513940136,
+      "min_time_ms": 0.00598399993032217,
+      "max_time_ms": 0.03484800085425377,
+      "total_time_ms": 7.481792007107288,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.25.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.05862288154084179,
+      "std_time_ms": 0.03773254164604426,
+      "min_time_ms": 0.018112000077962875,
+      "max_time_ms": 0.1573760062456131,
+      "total_time_ms": 38.5738560538739,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.25.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.014237811526362883,
+      "std_time_ms": 0.009346581262974045,
+      "min_time_ms": 0.005247999913990498,
+      "max_time_ms": 0.042208001017570496,
+      "total_time_ms": 9.368479984346777,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.25.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2915904197083237,
+      "std_time_ms": 0.22021591907440496,
+      "min_time_ms": 0.05110400170087814,
+      "max_time_ms": 0.7508800029754639,
+      "total_time_ms": 191.866496168077,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.25.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015748474222542802,
+      "std_time_ms": 0.01139750682428938,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.06095999851822853,
+      "total_time_ms": 10.362496038433164,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.25.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02227010336877229,
+      "std_time_ms": 0.01202430153549723,
+      "min_time_ms": 0.01190400030463934,
+      "max_time_ms": 0.0578560009598732,
+      "total_time_ms": 14.653728016652167,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.26.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011472778118110764,
+      "std_time_ms": 0.006446037746987519,
+      "min_time_ms": 0.006271999794989824,
+      "max_time_ms": 0.0398080013692379,
+      "total_time_ms": 7.549088001716882,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.26.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15886813359714388,
+      "std_time_ms": 0.10486184493092944,
+      "min_time_ms": 0.04527999833226204,
+      "max_time_ms": 1.4832960367202759,
+      "total_time_ms": 104.53523190692067,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.26.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027530893629648945,
+      "std_time_ms": 0.010954314114255001,
+      "min_time_ms": 0.016416000202298164,
+      "max_time_ms": 0.07689599692821503,
+      "total_time_ms": 18.115328008309007,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.26.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011288607902088878,
+      "std_time_ms": 0.006535439931625677,
+      "min_time_ms": 0.005888000130653381,
+      "max_time_ms": 0.03097599931061268,
+      "total_time_ms": 7.427903999574482,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.26.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.057580936320782795,
+      "std_time_ms": 0.0375285663499869,
+      "min_time_ms": 0.018239999189972878,
+      "max_time_ms": 0.15056000649929047,
+      "total_time_ms": 37.88825609907508,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.26.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01403078417602281,
+      "std_time_ms": 0.009215349930797718,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.04438399896025658,
+      "total_time_ms": 9.23225598782301,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.26.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2983008878175339,
+      "std_time_ms": 0.2418336407817846,
+      "min_time_ms": 0.05119999870657921,
+      "max_time_ms": 2.232287883758545,
+      "total_time_ms": 196.2819841839373,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.26.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015695513680430078,
+      "std_time_ms": 0.011335378996885592,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.05571199953556061,
+      "total_time_ms": 10.327648001722991,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.26.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.022046249260769247,
+      "std_time_ms": 0.011841491876207767,
+      "min_time_ms": 0.011935999616980553,
+      "max_time_ms": 0.05766399949789047,
+      "total_time_ms": 14.506432013586164,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.27.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01127372642039211,
+      "std_time_ms": 0.0063145176555536,
+      "min_time_ms": 0.006240000016987324,
+      "max_time_ms": 0.03417599946260452,
+      "total_time_ms": 7.418111984618008,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.27.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.1553436107084291,
+      "std_time_ms": 0.09173468879122151,
+      "min_time_ms": 0.045152001082897186,
+      "max_time_ms": 0.5078719854354858,
+      "total_time_ms": 102.21609584614635,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.27.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02778130089496135,
+      "std_time_ms": 0.011044293565681781,
+      "min_time_ms": 0.016448000445961952,
+      "max_time_ms": 0.08022399991750717,
+      "total_time_ms": 18.280095988884568,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.27.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011347744685362765,
+      "std_time_ms": 0.006490780769798836,
+      "min_time_ms": 0.00598399993032217,
+      "max_time_ms": 0.029759999364614487,
+      "total_time_ms": 7.466816002968699,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.27.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.05625279020167049,
+      "std_time_ms": 0.036920205040330265,
+      "min_time_ms": 0.018079999834299088,
+      "max_time_ms": 0.1483200043439865,
+      "total_time_ms": 37.014335952699184,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.27.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.013848413398353479,
+      "std_time_ms": 0.008861336716804063,
+      "min_time_ms": 0.0054720002226531506,
+      "max_time_ms": 0.05040000006556511,
+      "total_time_ms": 9.11225601611659,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.27.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.29206939824038725,
+      "std_time_ms": 0.2193821954722013,
+      "min_time_ms": 0.050944000482559204,
+      "max_time_ms": 0.692192018032074,
+      "total_time_ms": 192.18166404217482,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.27.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015281361723063927,
+      "std_time_ms": 0.010750300574463514,
+      "min_time_ms": 0.005408000200986862,
+      "max_time_ms": 0.0533440001308918,
+      "total_time_ms": 10.055136013776064,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.27.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.022166127663128372,
+      "std_time_ms": 0.01175805214190728,
+      "min_time_ms": 0.011872000060975552,
+      "max_time_ms": 0.05804799869656563,
+      "total_time_ms": 14.585312002338469,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.28.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011387234050525765,
+      "std_time_ms": 0.006291062836503394,
+      "min_time_ms": 0.006144000217318535,
+      "max_time_ms": 0.03468799963593483,
+      "total_time_ms": 7.492800005245954,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.28.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15626781766152853,
+      "std_time_ms": 0.09116722308995358,
+      "min_time_ms": 0.045152001082897186,
+      "max_time_ms": 0.3152320086956024,
+      "total_time_ms": 102.82422402128577,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.28.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02764829179402271,
+      "std_time_ms": 0.011332994382615565,
+      "min_time_ms": 0.0161920003592968,
+      "max_time_ms": 0.10153599828481674,
+      "total_time_ms": 18.192576000466943,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.28.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011386164120118216,
+      "std_time_ms": 0.00659948983017948,
+      "min_time_ms": 0.005919999908655882,
+      "max_time_ms": 0.0297279991209507,
+      "total_time_ms": 7.492095991037786,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.28.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.05637043167618995,
+      "std_time_ms": 0.037431812572336506,
+      "min_time_ms": 0.018112000077962875,
+      "max_time_ms": 0.2030400037765503,
+      "total_time_ms": 37.09174404293299,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.28.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.013786844975714172,
+      "std_time_ms": 0.008985143758262456,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.05100800096988678,
+      "total_time_ms": 9.071743994019926,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.28.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.29200627340575663,
+      "std_time_ms": 0.2195694610806891,
+      "min_time_ms": 0.05119999870657921,
+      "max_time_ms": 0.8856639862060547,
+      "total_time_ms": 192.14012790098786,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.28.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015257677856668558,
+      "std_time_ms": 0.01076745529906817,
+      "min_time_ms": 0.005375999957323074,
+      "max_time_ms": 0.054976001381874084,
+      "total_time_ms": 10.039552029687911,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.28.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.0219202431196228,
+      "std_time_ms": 0.011758836495867472,
+      "min_time_ms": 0.011839999817311764,
+      "max_time_ms": 0.06102399900555611,
+      "total_time_ms": 14.423519972711802,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.29.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011510565332745663,
+      "std_time_ms": 0.006423738676350406,
+      "min_time_ms": 0.006047999951988459,
+      "max_time_ms": 0.03814399987459183,
+      "total_time_ms": 7.5739519889466465,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.29.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.1566534225678915,
+      "std_time_ms": 0.09211927435438573,
+      "min_time_ms": 0.04508800059556961,
+      "max_time_ms": 0.34678399562835693,
+      "total_time_ms": 103.0779520496726,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.29.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02756795135403114,
+      "std_time_ms": 0.010875184793301622,
+      "min_time_ms": 0.016224000602960587,
+      "max_time_ms": 0.07884799689054489,
+      "total_time_ms": 18.13971199095249,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.29.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011354553201844446,
+      "std_time_ms": 0.006568411162273471,
+      "min_time_ms": 0.006016000173985958,
+      "max_time_ms": 0.032127998769283295,
+      "total_time_ms": 7.471296006813645,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.29.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.05622327051445344,
+      "std_time_ms": 0.03729448245539743,
+      "min_time_ms": 0.018271999433636665,
+      "max_time_ms": 0.20479999482631683,
+      "total_time_ms": 36.99491199851036,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.29.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.013858820683263402,
+      "std_time_ms": 0.008950301057084945,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.062144000083208084,
+      "total_time_ms": 9.119104009587318,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.29.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2911238899924382,
+      "std_time_ms": 0.21846244271862222,
+      "min_time_ms": 0.05119999870657921,
+      "max_time_ms": 0.6410560011863708,
+      "total_time_ms": 191.55951961502433,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.29.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01552588452859626,
+      "std_time_ms": 0.011232986972267947,
+      "min_time_ms": 0.005408000200986862,
+      "max_time_ms": 0.06966400146484375,
+      "total_time_ms": 10.216032019816339,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.29.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02200457141635583,
+      "std_time_ms": 0.011723581684905355,
+      "min_time_ms": 0.011872000060975552,
+      "max_time_ms": 0.07052800059318542,
+      "total_time_ms": 14.479007991962135,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.3.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010178431620153295,
+      "std_time_ms": 0.006490369417284683,
+      "min_time_ms": 0.00598399993032217,
+      "max_time_ms": 0.02956799976527691,
+      "total_time_ms": 6.6974080060608685,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.3.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.16719333745403311,
+      "std_time_ms": 0.08424318035763478,
+      "min_time_ms": 0.046592000871896744,
+      "max_time_ms": 0.4155519902706146,
+      "total_time_ms": 110.01321604475379,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.3.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027546310109457166,
+      "std_time_ms": 0.011823448518258329,
+      "min_time_ms": 0.01651199907064438,
+      "max_time_ms": 0.06492800265550613,
+      "total_time_ms": 18.125472052022815,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.3.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010283623083910726,
+      "std_time_ms": 0.0064950924447377285,
+      "min_time_ms": 0.006016000173985958,
+      "max_time_ms": 0.03308799862861633,
+      "total_time_ms": 6.766623989213258,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.3.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.07139389644911949,
+      "std_time_ms": 0.04375012463239692,
+      "min_time_ms": 0.018559999763965607,
+      "max_time_ms": 0.16521599888801575,
+      "total_time_ms": 46.97718386352062,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.3.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016420133762899504,
+      "std_time_ms": 0.010888022671841064,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.050144001841545105,
+      "total_time_ms": 10.804448015987873,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.3.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.29354616443663384,
+      "std_time_ms": 0.2141657369966563,
+      "min_time_ms": 0.054207999259233475,
+      "max_time_ms": 0.9497600197792053,
+      "total_time_ms": 193.15337619930506,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.3.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.018023392097815012,
+      "std_time_ms": 0.013923134177340203,
+      "min_time_ms": 0.0054720002226531506,
+      "max_time_ms": 0.0772479996085167,
+      "total_time_ms": 11.859392000362277,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.3.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02266825530762957,
+      "std_time_ms": 0.0132639626433053,
+      "min_time_ms": 0.01190400030463934,
+      "max_time_ms": 0.06460800021886826,
+      "total_time_ms": 14.915711992420256,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.30.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011243574476962212,
+      "std_time_ms": 0.00621980866947667,
+      "min_time_ms": 0.006207999773323536,
+      "max_time_ms": 0.033952001482248306,
+      "total_time_ms": 7.398272005841136,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.30.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15629738624176537,
+      "std_time_ms": 0.0971870265511828,
+      "min_time_ms": 0.04451199993491173,
+      "max_time_ms": 1.0257600545883179,
+      "total_time_ms": 102.84368014708161,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.30.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02757427360477509,
+      "std_time_ms": 0.010932903403876551,
+      "min_time_ms": 0.01648000068962574,
+      "max_time_ms": 0.07654400169849396,
+      "total_time_ms": 18.14387203194201,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.30.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011384170216516701,
+      "std_time_ms": 0.006563156026221449,
+      "min_time_ms": 0.0058559998869895935,
+      "max_time_ms": 0.033440001308918,
+      "total_time_ms": 7.49078400246799,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.30.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.056262419326938574,
+      "std_time_ms": 0.037047417591571305,
+      "min_time_ms": 0.018015999346971512,
+      "max_time_ms": 0.14880000054836273,
+      "total_time_ms": 37.02067191712558,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.30.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.013651598792659023,
+      "std_time_ms": 0.008934627364529707,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.04960000142455101,
+      "total_time_ms": 8.982752005569637,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.30.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2927679998635974,
+      "std_time_ms": 0.22286383065305668,
+      "min_time_ms": 0.05027199909090996,
+      "max_time_ms": 1.0880639553070068,
+      "total_time_ms": 192.6413439102471,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.30.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015391708204471775,
+      "std_time_ms": 0.011057488928240404,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.055456001311540604,
+      "total_time_ms": 10.127743998542428,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.30.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02199727660724412,
+      "std_time_ms": 0.011790323910042082,
+      "min_time_ms": 0.011935999616980553,
+      "max_time_ms": 0.06003199890255928,
+      "total_time_ms": 14.47420800756663,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.31.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011495051683297544,
+      "std_time_ms": 0.006453671000120698,
+      "min_time_ms": 0.006111999973654747,
+      "max_time_ms": 0.035679999738931656,
+      "total_time_ms": 7.563744007609785,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.31.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15874562938740097,
+      "std_time_ms": 0.09466966851221137,
+      "min_time_ms": 0.021344000473618507,
+      "max_time_ms": 0.32185599207878113,
+      "total_time_ms": 104.45462413690984,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.31.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.028163696027793964,
+      "std_time_ms": 0.01150228591416885,
+      "min_time_ms": 0.01651199907064438,
+      "max_time_ms": 0.07686399668455124,
+      "total_time_ms": 18.53171198628843,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.31.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01172979938794822,
+      "std_time_ms": 0.006926520647325129,
+      "min_time_ms": 0.006016000173985958,
+      "max_time_ms": 0.04182400181889534,
+      "total_time_ms": 7.7182079972699285,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.31.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06036299090028534,
+      "std_time_ms": 0.03968419532048315,
+      "min_time_ms": 0.018015999346971512,
+      "max_time_ms": 0.1595200002193451,
+      "total_time_ms": 39.71884801238775,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.31.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.014370042521444271,
+      "std_time_ms": 0.009283424345378637,
+      "min_time_ms": 0.005408000200986862,
+      "max_time_ms": 0.052352000027894974,
+      "total_time_ms": 9.45548797911033,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.31.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.6921248901522178,
+      "std_time_ms": 9.149942940710345,
+      "min_time_ms": 0.05193600058555603,
+      "max_time_ms": 235.12118530273438,
+      "total_time_ms": 455.4181777201593,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.31.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016650699061344414,
+      "std_time_ms": 0.012192948834398393,
+      "min_time_ms": 0.0054720002226531506,
+      "max_time_ms": 0.0711359977722168,
+      "total_time_ms": 10.956159982364625,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.31.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02445529482262294,
+      "std_time_ms": 0.013742165053516948,
+      "min_time_ms": 0.01190400030463934,
+      "max_time_ms": 0.07209599763154984,
+      "total_time_ms": 16.091583993285894,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.32.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011506285737792318,
+      "std_time_ms": 0.006505503080956559,
+      "min_time_ms": 0.006016000173985958,
+      "max_time_ms": 0.035711999982595444,
+      "total_time_ms": 7.571136015467346,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.32.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15692697845308795,
+      "std_time_ms": 0.0967376081452469,
+      "min_time_ms": 0.04560000076889992,
+      "max_time_ms": 0.8675199747085571,
+      "total_time_ms": 103.25795182213187,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.32.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02794572644467865,
+      "std_time_ms": 0.01123296277399321,
+      "min_time_ms": 0.016416000202298164,
+      "max_time_ms": 0.07673600316047668,
+      "total_time_ms": 18.38828800059855,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.32.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011577045581074245,
+      "std_time_ms": 0.006676209882559459,
+      "min_time_ms": 0.005888000130653381,
+      "max_time_ms": 0.03420799970626831,
+      "total_time_ms": 7.617695992346853,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.32.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.05741018827404476,
+      "std_time_ms": 0.03798376589235546,
+      "min_time_ms": 0.018271999433636665,
+      "max_time_ms": 0.14246399700641632,
+      "total_time_ms": 37.77590388432145,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.32.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.014017556258264964,
+      "std_time_ms": 0.009211956982095407,
+      "min_time_ms": 0.005280000157654285,
+      "max_time_ms": 0.048576001077890396,
+      "total_time_ms": 9.223552017938346,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.32.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2960254831981242,
+      "std_time_ms": 0.2254980635568595,
+      "min_time_ms": 0.05087999999523163,
+      "max_time_ms": 0.6778560280799866,
+      "total_time_ms": 194.78476794436574,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.32.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015558808529607974,
+      "std_time_ms": 0.011272789225408558,
+      "min_time_ms": 0.005375999957323074,
+      "max_time_ms": 0.0551999993622303,
+      "total_time_ms": 10.237696012482047,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.32.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02235662006974039,
+      "std_time_ms": 0.012255969351266195,
+      "min_time_ms": 0.011776000261306763,
+      "max_time_ms": 0.057631999254226685,
+      "total_time_ms": 14.710656005889177,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.33.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011675136783768884,
+      "std_time_ms": 0.0064167366472659675,
+      "min_time_ms": 0.006304000038653612,
+      "max_time_ms": 0.029664000496268272,
+      "total_time_ms": 7.682240003719926,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.33.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.1542881461183079,
+      "std_time_ms": 0.09288931825865179,
+      "min_time_ms": 0.0451200008392334,
+      "max_time_ms": 0.3875519931316376,
+      "total_time_ms": 101.5216001458466,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.33.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02877364136380537,
+      "std_time_ms": 0.019998325626026214,
+      "min_time_ms": 0.016287999227643013,
+      "max_time_ms": 0.4301440119743347,
+      "total_time_ms": 18.933056017383933,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.33.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011685446814823567,
+      "std_time_ms": 0.0066629857035714075,
+      "min_time_ms": 0.006016000173985958,
+      "max_time_ms": 0.031808000057935715,
+      "total_time_ms": 7.689024004153907,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.33.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.056524401190931314,
+      "std_time_ms": 0.03703731635552816,
+      "min_time_ms": 0.0180479995906353,
+      "max_time_ms": 0.14374400675296783,
+      "total_time_ms": 37.1930559836328,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.33.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01384184802570989,
+      "std_time_ms": 0.009025530794075599,
+      "min_time_ms": 0.005280000157654285,
+      "max_time_ms": 0.047807998955249786,
+      "total_time_ms": 9.107936000917107,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.33.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.292316011427746,
+      "std_time_ms": 0.22486936093366,
+      "min_time_ms": 0.050944000482559204,
+      "max_time_ms": 0.9909759759902954,
+      "total_time_ms": 192.34393551945686,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.33.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015492814576032495,
+      "std_time_ms": 0.011140769943395804,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.05315199866890907,
+      "total_time_ms": 10.194271991029382,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.33.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02241765346949903,
+      "std_time_ms": 0.012005891997428892,
+      "min_time_ms": 0.011744000017642975,
+      "max_time_ms": 0.058687999844551086,
+      "total_time_ms": 14.750815982930362,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.34.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011578553215399566,
+      "std_time_ms": 0.0067153724783035815,
+      "min_time_ms": 0.00598399993032217,
+      "max_time_ms": 0.05337600037455559,
+      "total_time_ms": 7.618688015732914,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.34.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15593784772380506,
+      "std_time_ms": 0.09923840437496012,
+      "min_time_ms": 0.04524800181388855,
+      "max_time_ms": 0.9983680248260498,
+      "total_time_ms": 102.60710380226374,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.34.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027944851142996895,
+      "std_time_ms": 0.011166558678899183,
+      "min_time_ms": 0.016224000602960587,
+      "max_time_ms": 0.07968000322580338,
+      "total_time_ms": 18.387712052091956,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.34.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011606224919428716,
+      "std_time_ms": 0.006762876254442248,
+      "min_time_ms": 0.005888000130653381,
+      "max_time_ms": 0.03811199963092804,
+      "total_time_ms": 7.636895996984094,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.34.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.05626018241183736,
+      "std_time_ms": 0.03748099039247344,
+      "min_time_ms": 0.0180479995906353,
+      "max_time_ms": 0.17923200130462646,
+      "total_time_ms": 37.01920002698898,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.34.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.013955501518226412,
+      "std_time_ms": 0.009051253255765765,
+      "min_time_ms": 0.005216000135987997,
+      "max_time_ms": 0.04608000069856644,
+      "total_time_ms": 9.18271999899298,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.34.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2912218355231191,
+      "std_time_ms": 0.22548101558002454,
+      "min_time_ms": 0.050655998289585114,
+      "max_time_ms": 0.8182079792022705,
+      "total_time_ms": 191.62396777421236,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.34.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015666139795442076,
+      "std_time_ms": 0.01123191110702676,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.059647999703884125,
+      "total_time_ms": 10.308319985400885,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.34.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02239654712537502,
+      "std_time_ms": 0.012091339384122692,
+      "min_time_ms": 0.01190400030463934,
+      "max_time_ms": 0.06540799885988235,
+      "total_time_ms": 14.736928008496761,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.35.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011729361686153524,
+      "std_time_ms": 0.006596179754441435,
+      "min_time_ms": 0.006207999773323536,
+      "max_time_ms": 0.03855999931693077,
+      "total_time_ms": 7.717919989489019,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.35.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.15494735542356425,
+      "std_time_ms": 0.09473197768748785,
+      "min_time_ms": 0.04521600157022476,
+      "max_time_ms": 0.35763201117515564,
+      "total_time_ms": 101.95535986870527,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.35.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02817940429181404,
+      "std_time_ms": 0.011112650892379597,
+      "min_time_ms": 0.016543999314308167,
+      "max_time_ms": 0.07660800218582153,
+      "total_time_ms": 18.54204802401364,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.35.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01161911246426245,
+      "std_time_ms": 0.006629896400247895,
+      "min_time_ms": 0.00595200015231967,
+      "max_time_ms": 0.03494400158524513,
+      "total_time_ms": 7.645376001484692,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.35.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.05560588452817821,
+      "std_time_ms": 0.03654050117549753,
+      "min_time_ms": 0.0180479995906353,
+      "max_time_ms": 0.15084800124168396,
+      "total_time_ms": 36.588672019541264,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.35.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.014024413350720445,
+      "std_time_ms": 0.009232759750429018,
+      "min_time_ms": 0.005375999957323074,
+      "max_time_ms": 0.05923200026154518,
+      "total_time_ms": 9.228063984774053,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.35.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.29195204846515665,
+      "std_time_ms": 0.22651412219185102,
+      "min_time_ms": 0.05036799982190132,
+      "max_time_ms": 0.7375040054321289,
+      "total_time_ms": 192.10444789007306,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.35.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01565582980472583,
+      "std_time_ms": 0.01121475083021704,
+      "min_time_ms": 0.005280000157654285,
+      "max_time_ms": 0.054016001522541046,
+      "total_time_ms": 10.301536011509597,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.35.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02252902129189448,
+      "std_time_ms": 0.011862622505042584,
+      "min_time_ms": 0.011935999616980553,
+      "max_time_ms": 0.0570559985935688,
+      "total_time_ms": 14.824096010066569,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.4.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010120316079497836,
+      "std_time_ms": 0.006076805090214236,
+      "min_time_ms": 0.006111999973654747,
+      "max_time_ms": 0.030079999938607216,
+      "total_time_ms": 6.659167980309576,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.4.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.16797456530270968,
+      "std_time_ms": 0.08514585521725175,
+      "min_time_ms": 0.04630399867892265,
+      "max_time_ms": 0.44172799587249756,
+      "total_time_ms": 110.52726396918297,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.4.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.026890407296571325,
+      "std_time_ms": 0.011439097524181815,
+      "min_time_ms": 0.015904000028967857,
+      "max_time_ms": 0.07360000163316727,
+      "total_time_ms": 17.693888001143932,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.4.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010051598797883487,
+      "std_time_ms": 0.006221020998770574,
+      "min_time_ms": 0.00595200015231967,
+      "max_time_ms": 0.029472000896930695,
+      "total_time_ms": 6.613952009007335,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.4.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.0687746626882613,
+      "std_time_ms": 0.0417407942973841,
+      "min_time_ms": 0.017983999103307724,
+      "max_time_ms": 0.15148800611495972,
+      "total_time_ms": 45.25372804887593,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.4.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015963817578613034,
+      "std_time_ms": 0.010627482893017287,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.05119999870657921,
+      "total_time_ms": 10.504191966727376,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.4.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2903100303841308,
+      "std_time_ms": 0.21101041224789485,
+      "min_time_ms": 0.05305600166320801,
+      "max_time_ms": 0.7327039837837219,
+      "total_time_ms": 191.02399999275804,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.4.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.017330626177949702,
+      "std_time_ms": 0.013204758859799168,
+      "min_time_ms": 0.005375999957323074,
+      "max_time_ms": 0.06652799993753433,
+      "total_time_ms": 11.403552025090903,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.4.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.021882893606782593,
+      "std_time_ms": 0.012772664698415545,
+      "min_time_ms": 0.011872000060975552,
+      "max_time_ms": 0.06425599753856659,
+      "total_time_ms": 14.398943993262947,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.5.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010205471099815741,
+      "std_time_ms": 0.006032702384892238,
+      "min_time_ms": 0.006111999973654747,
+      "max_time_ms": 0.029791999608278275,
+      "total_time_ms": 6.715199983678758,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.5.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.1659304561393511,
+      "std_time_ms": 0.08702445791111577,
+      "min_time_ms": 0.04572800174355507,
+      "max_time_ms": 0.32655999064445496,
+      "total_time_ms": 109.18224013969302,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.5.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02703606078010562,
+      "std_time_ms": 0.011459228442617595,
+      "min_time_ms": 0.016831999644637108,
+      "max_time_ms": 0.07900799810886383,
+      "total_time_ms": 17.789727993309498,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.5.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010365714292158018,
+      "std_time_ms": 0.006342701511708923,
+      "min_time_ms": 0.006240000016987324,
+      "max_time_ms": 0.030719999223947525,
+      "total_time_ms": 6.820640004239976,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.5.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06766059578574718,
+      "std_time_ms": 0.04091722933891867,
+      "min_time_ms": 0.0180479995906353,
+      "max_time_ms": 0.1467519998550415,
+      "total_time_ms": 44.52067202702165,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.5.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015739623104055103,
+      "std_time_ms": 0.010386616619792559,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.052671998739242554,
+      "total_time_ms": 10.356672002468258,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.5.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2898008995901759,
+      "std_time_ms": 0.20960834184306407,
+      "min_time_ms": 0.052480001002550125,
+      "max_time_ms": 0.8824959993362427,
+      "total_time_ms": 190.68899193033576,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.5.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016839440712439164,
+      "std_time_ms": 0.012459817057536108,
+      "min_time_ms": 0.005344000179320574,
+      "max_time_ms": 0.05369599908590317,
+      "total_time_ms": 11.080351988784969,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.5.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02146645593188001,
+      "std_time_ms": 0.012239093164814054,
+      "min_time_ms": 0.011807999573647976,
+      "max_time_ms": 0.05532800033688545,
+      "total_time_ms": 14.124928003177047,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.6.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010452425517113511,
+      "std_time_ms": 0.006292745274088458,
+      "min_time_ms": 0.00598399993032217,
+      "max_time_ms": 0.03392000123858452,
+      "total_time_ms": 6.8776959902606905,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.6.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.16456583577086498,
+      "std_time_ms": 0.08694406635722254,
+      "min_time_ms": 0.04646399989724159,
+      "max_time_ms": 0.3957119882106781,
+      "total_time_ms": 108.28431993722916,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.6.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02700299089123413,
+      "std_time_ms": 0.011280999641338902,
+      "min_time_ms": 0.016256000846624374,
+      "max_time_ms": 0.07919999957084656,
+      "total_time_ms": 17.767968006432056,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.6.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010401410344382323,
+      "std_time_ms": 0.006335787517911008,
+      "min_time_ms": 0.00595200015231967,
+      "max_time_ms": 0.03094400092959404,
+      "total_time_ms": 6.844128006603569,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.6.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06622224928114824,
+      "std_time_ms": 0.04082447477958178,
+      "min_time_ms": 0.018271999433636665,
+      "max_time_ms": 0.15199999511241913,
+      "total_time_ms": 43.57424002699554,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.6.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015447392120623344,
+      "std_time_ms": 0.010264575809501493,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.0525440014898777,
+      "total_time_ms": 10.16438401537016,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.6.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.2902505531295636,
+      "std_time_ms": 0.21289395910097184,
+      "min_time_ms": 0.05318399891257286,
+      "max_time_ms": 0.912992000579834,
+      "total_time_ms": 190.98486395925283,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.6.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01649147718451283,
+      "std_time_ms": 0.012254822386863751,
+      "min_time_ms": 0.005311999935656786,
+      "max_time_ms": 0.06147199869155884,
+      "total_time_ms": 10.851391987409443,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.6.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.021493349532882674,
+      "std_time_ms": 0.012206194753525648,
+      "min_time_ms": 0.01190400030463934,
+      "max_time_ms": 0.06313599646091461,
+      "total_time_ms": 14.1426239926368,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.7.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01044289360253146,
+      "std_time_ms": 0.0059862418375842205,
+      "min_time_ms": 0.006207999773323536,
+      "max_time_ms": 0.03488000109791756,
+      "total_time_ms": 6.871423990465701,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.7.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.16229796964437404,
+      "std_time_ms": 0.08720936617350562,
+      "min_time_ms": 0.04566400125622749,
+      "max_time_ms": 0.4119040071964264,
+      "total_time_ms": 106.79206402599812,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.7.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027116206684079033,
+      "std_time_ms": 0.011116824599388616,
+      "min_time_ms": 0.016896000131964684,
+      "max_time_ms": 0.08115199953317642,
+      "total_time_ms": 17.842463998124003,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.7.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010424218856726737,
+      "std_time_ms": 0.006199397570644167,
+      "min_time_ms": 0.006016000173985958,
+      "max_time_ms": 0.02956799976527691,
+      "total_time_ms": 6.8591360077261925,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.7.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06490650460814723,
+      "std_time_ms": 0.0401036606694691,
+      "min_time_ms": 0.01820800080895424,
+      "max_time_ms": 0.1632000058889389,
+      "total_time_ms": 42.70848003216088,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.7.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015301641365541513,
+      "std_time_ms": 0.01007645245646262,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.044096000492572784,
+      "total_time_ms": 10.068480018526316,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.7.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.28753021290939085,
+      "std_time_ms": 0.21340467749077585,
+      "min_time_ms": 0.052352000027894974,
+      "max_time_ms": 0.8689919710159302,
+      "total_time_ms": 189.1948800943792,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.7.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.0164568510782653,
+      "std_time_ms": 0.012152400748394469,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.06188800185918808,
+      "total_time_ms": 10.828608009498566,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.7.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.021596741691333635,
+      "std_time_ms": 0.012002911055468662,
+      "min_time_ms": 0.011872000060975552,
+      "max_time_ms": 0.05532800033688545,
+      "total_time_ms": 14.210656032897532,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.8.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.012623854169033263,
+      "std_time_ms": 0.056027446481826594,
+      "min_time_ms": 0.00595200015231967,
+      "max_time_ms": 1.4401600360870361,
+      "total_time_ms": 8.306496043223888,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.8.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.16107350749764762,
+      "std_time_ms": 0.08705231863235766,
+      "min_time_ms": 0.04598399996757507,
+      "max_time_ms": 0.33052799105644226,
+      "total_time_ms": 105.98636793345213,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.8.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.027214054703304832,
+      "std_time_ms": 0.011167095185828002,
+      "min_time_ms": 0.016287999227643013,
+      "max_time_ms": 0.07475200295448303,
+      "total_time_ms": 17.90684799477458,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.8.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01067404257060003,
+      "std_time_ms": 0.006485359738565698,
+      "min_time_ms": 0.00595200015231967,
+      "max_time_ms": 0.04124800115823746,
+      "total_time_ms": 7.023520011454821,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.8.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.0646333860369303,
+      "std_time_ms": 0.040608126906622764,
+      "min_time_ms": 0.018239999189972878,
+      "max_time_ms": 0.22281600534915924,
+      "total_time_ms": 42.528768012300134,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.8.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.015418942221567759,
+      "std_time_ms": 0.010229468072808152,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.05660799890756607,
+      "total_time_ms": 10.145663981791586,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.8.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.28504000034602217,
+      "std_time_ms": 0.2118954618845006,
+      "min_time_ms": 0.05158400163054466,
+      "max_time_ms": 0.7839679718017578,
+      "total_time_ms": 187.5563202276826,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.8.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016482723428157233,
+      "std_time_ms": 0.012401678091172574,
+      "min_time_ms": 0.005375999957323074,
+      "max_time_ms": 0.08064000308513641,
+      "total_time_ms": 10.84563201572746,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.8.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.021644303938911768,
+      "std_time_ms": 0.013030732771814395,
+      "min_time_ms": 0.01190400030463934,
+      "max_time_ms": 0.15568000078201294,
+      "total_time_ms": 14.241951991803944,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.9.input_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.010861714270056472,
+      "std_time_ms": 0.0062710311460868196,
+      "min_time_ms": 0.006175999995321035,
+      "max_time_ms": 0.040352001786231995,
+      "total_time_ms": 7.147007989697158,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.9.mlp.down_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.16066373271533602,
+      "std_time_ms": 0.0880396388922818,
+      "min_time_ms": 0.045471999794244766,
+      "max_time_ms": 0.4607680141925812,
+      "total_time_ms": 105.7167361266911,
+      "avg_input_shapes": [
+        [
+          25,
+          1536
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.9.mlp.gate_up_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.02755890576604833,
+      "std_time_ms": 0.01130301041363005,
+      "min_time_ms": 0.016543999314308167,
+      "max_time_ms": 0.06511999666690826,
+      "total_time_ms": 18.1337599940598,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          3072
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.9.post_attention_layernorm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01087416413078781,
+      "std_time_ms": 0.006560098954762699,
+      "min_time_ms": 0.005919999908655882,
+      "max_time_ms": 0.033376000821590424,
+      "total_time_ms": 7.155199998058379,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.9.self_attn.attn",
+      "operator_type": "attention",
+      "num_calls": 658,
+      "avg_time_ms": 0.06404527656360329,
+      "std_time_ms": 0.03986682969391207,
+      "min_time_ms": 0.018432000651955605,
+      "max_time_ms": 0.18777599930763245,
+      "total_time_ms": 42.14179197885096,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ],
+        [
+          25,
+          128
+        ],
+        [
+          25,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          512
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.9.self_attn.k_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.01536778113337681,
+      "std_time_ms": 0.010115873311151807,
+      "min_time_ms": 0.005408000200986862,
+      "max_time_ms": 0.052000001072883606,
+      "total_time_ms": 10.11199998576194,
+      "avg_input_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          1,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.9.self_attn.o_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.28442986024186967,
+      "std_time_ms": 0.21148355694652993,
+      "min_time_ms": 0.05257600173354149,
+      "max_time_ms": 0.7084800004959106,
+      "total_time_ms": 187.15484803915024,
+      "avg_input_shapes": [
+        [
+          25,
+          512
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.9.self_attn.q_norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.016356960491710384,
+      "std_time_ms": 0.01210671429409651,
+      "min_time_ms": 0.005439999978989363,
+      "max_time_ms": 0.0631679967045784,
+      "total_time_ms": 10.762880003545433,
+      "avg_input_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4,
+          128
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.layers.9.self_attn.qkv_proj",
+      "operator_type": "linear",
+      "num_calls": 658,
+      "avg_time_ms": 0.021897240159721724,
+      "std_time_ms": 0.01226029273535674,
+      "min_time_ms": 0.011807999573647976,
+      "max_time_ms": 0.06755200028419495,
+      "total_time_ms": 14.408384025096893,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          768
+        ]
+      ]
+    },
+    {
+      "layer_name": "model.norm",
+      "operator_type": "layernorm",
+      "num_calls": 658,
+      "avg_time_ms": 0.011895148920767169,
+      "std_time_ms": 0.006534129271531868,
+      "min_time_ms": 0.006463999859988689,
+      "max_time_ms": 0.03174399957060814,
+      "total_time_ms": 7.827007989864796,
+      "avg_input_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ],
+      "avg_output_shapes": [
+        [
+          25,
+          4096
+        ],
+        [
+          25,
+          4096
+        ]
+      ]
+    }
+  ],
+  "summary_stats": {
+    "attention": {
+      "total_calls": 23688,
+      "total_time_ms": 1535.0894075855613,
+      "avg_time_per_call_ms": 0.06480451737527698,
+      "std_time_ms": 0.05132144554482704,
+      "percentage_of_total": 9.451461266634217
+    },
+    "embedding": {
+      "total_calls": 658,
+      "total_time_ms": 487.7139527797699,
+      "avg_time_per_call_ms": 0.7412066151668235,
+      "std_time_ms": 3.802217178175003,
+      "percentage_of_total": 3.002828051002716
+    },
+    "layernorm": {
+      "total_calls": 95410,
+      "total_time_ms": 1306.403680101037,
+      "avg_time_per_call_ms": 0.013692523635898093,
+      "std_time_ms": 0.010923977760660682,
+      "percentage_of_total": 8.0434557883399
+    },
+    "linear": {
+      "total_calls": 94752,
+      "total_time_ms": 12912.613819602877,
+      "avg_time_per_call_ms": 0.13627800805896315,
+      "std_time_ms": 1.1734888375204007,
+      "percentage_of_total": 79.50225489402317
+    }
+  },
+  "total_forward_time_ms": 16241.820860069245
+}

@@ -395,14 +395,19 @@ def _aggregate_e2e_metrics(rank_results: List[Dict]) -> Dict[str, Any]:
         else:
             aggregated[metric_name] = None
     
-    # Aggregate throughput
-    total_tokens = sum([m.get('total_generation_tokens', 0) for m in all_metrics])
+    # Aggregate prompt and generation tokens
+    total_prompt_tokens = sum([m.get('total_prompt_tokens', 0) for m in all_metrics])
+    total_generation_tokens = sum([m.get('total_generation_tokens', 0) for m in all_metrics])
+    
+    aggregated['total_prompt_tokens'] = total_prompt_tokens
+    aggregated['total_generation_tokens'] = total_generation_tokens
+    
+    # Aggregate throughput (use total tokens: prompt + generation)
+    total_tokens = total_prompt_tokens + total_generation_tokens
     if total_time > 0:
         aggregated['throughput'] = {
             'tokens_per_second': total_tokens / total_time
         }
-    
-    aggregated['total_generation_tokens'] = total_tokens
     
     return aggregated
 

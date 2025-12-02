@@ -9,13 +9,29 @@ benchmarking using trace data. The benchmark will automatically run in two phase
 
 Both phases use the same trace data to ensure consistency.
 
-命令行：
-python benchmarks/run_parallel_sweep.py --num-gpus 4 --base-config benchmarks/operator_configs/e2e_trace_config.py --output-dir benchmark_results/4gpu_sweep --gpu-ids "3,4,5,6" --gpu-type 'h100'
-python benchmarks/run_parallel_sweep.py \
+命令行示例：
+# 完整的两阶段 benchmark sweep（推荐）
+python benchmarks/run_benchmarks.py \
     --num-gpus 4 \
     --base-config benchmarks/operator_configs/e2e_trace_config.py \
     --output-dir benchmark_results/4gpu_sweep \
-    --gpu-ids "2,3,4,5"
+    --gpu-ids "2,3,4,5" \
+    --gpu-type "h100"
+
+# 单独运行 Phase 1 (E2E metrics)
+python benchmarks/benchmark_e2e_metrics.py \
+    --config benchmarks/operator_configs/e2e_trace_config.py \
+    --phase 1
+
+# 单独运行 Phase 2 (Operator profiling)
+python benchmarks/benchmark_operators.py \
+    --config benchmarks/operator_configs/e2e_trace_config.py \
+    --phase 2
+
+python benchmarks/run_benchmarks.py \
+        --num-gpus 4 \
+        --base-config benchmarks/operator_configs/e2e_trace_config.py \
+        --output-dir benchmark_results/test_run --gpu-ids "0,1,2,3"
 """
 
 from vllm.profiler import BenchmarkConfig
@@ -37,7 +53,7 @@ config = BenchmarkConfig(
     
     # Trace mode configuration
     use_trace_data=True,
-    trace_file_path="/mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_traceB_test_2min.jsonl",
+    trace_file_path="/mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_traceB_test_2min20.jsonl",
     trace_time_range_minutes=(0, 2),  # First 2 minutes (adjust as needed)
     trace_hash_id_seed=42,
     trace_realtime_replay=True,  # Replay with real-time intervals
@@ -50,7 +66,7 @@ config = BenchmarkConfig(
     include_summary_stats=True,
     verbose=True,
     
-    gpu_memory_utilization=0.7,
+    gpu_memory_utilization=0.5,
     dtype="auto",
     enable_cuda_graph=False,  # Disable for more accurate profiling
 )
