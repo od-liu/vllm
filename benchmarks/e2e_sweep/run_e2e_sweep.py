@@ -19,6 +19,13 @@ Example usage:
         --trace-file /path/to/trace.jsonl \
         --gpu-type h100
 
+
+        python benchmarks/e2e_sweep/run_e2e_sweep.py \
+        --num-gpus 4 \
+        --base-config benchmarks/e2e_sweep/example_configs/e2e_config_template.py \
+        --output-dir e2e_results/h100_4gpu_600prompts \
+        --gpu-ids "0,1,2,3"
+
 For visualization:
     python benchmarks/e2e_sweep/visualize_e2e_results.py \
         --results-dir e2e_results/h100_8gpu
@@ -27,8 +34,10 @@ For visualization:
 import argparse
 import json
 import os
+import queue
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 from typing import List, Tuple, Dict, Any
@@ -117,7 +126,8 @@ def create_temp_config(
             temp_config_lines.append(f'    output_file="{output_file}",')
         elif model_path and 'model_path=' in line:
             temp_config_lines.append(f'    model_path="{model_path}",')
-        elif trace_file and 'trace_file_path=' in line:
+        elif trace_file and 'trace_file_path=' in line and not line.strip().startswith('#'):
+            # Replace trace_file_path only if it's not commented out
             temp_config_lines.append(f'    trace_file_path="{trace_file}",')
         else:
             temp_config_lines.append(line)
@@ -191,11 +201,47 @@ def run_e2e_benchmark(
             universal_newlines=True,
         )
         
-        # Stream output line by line
+        # Use a queue and thread to avoid blocking on stdout
+        output_queue = queue.Queue()
         output_lines = []
-        for line in process.stdout:
-            print(line, end='')  # Print to terminal in real-time
-            output_lines.append(line)
+        
+        def reader_thread():
+            try:
+                for line in process.stdout:
+                    output_queue.put(('line', line))
+            except Exception as e:
+                output_queue.put(('error', str(e)))
+            finally:
+                output_queue.put(('done', None))
+        
+        reader = threading.Thread(target=reader_thread, daemon=True)
+        reader.start()
+        
+        # Process output from queue without blocking
+        done = False
+        while not done:
+            try:
+                msg_type, data = output_queue.get(timeout=1)
+                if msg_type == 'line':
+                    print(data, end='')  # Print to terminal in real-time
+                    output_lines.append(data)
+                elif msg_type == 'error':
+                    print(f"Error reading output: {data}", file=sys.stderr)
+                elif msg_type == 'done':
+                    done = True
+            except queue.Empty:
+                # Check if process is still running
+                if process.poll() is not None:
+                    # Process finished, drain any remaining output
+                    while not output_queue.empty():
+                        try:
+                            msg_type, data = output_queue.get_nowait()
+                            if msg_type == 'line':
+                                print(data, end='')
+                                output_lines.append(data)
+                        except queue.Empty:
+                            break
+                    break
         
         # Wait for process to complete
         return_code = process.wait(timeout=3600)

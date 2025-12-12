@@ -19,6 +19,7 @@ import os
 import sys
 import tempfile
 import time
+import traceback
 from multiprocessing import Process
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -28,13 +29,15 @@ import torch
 # Add vllm to path if needed
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from vllm import LLM, SamplingParams
+from vllm import SamplingParams
+from vllm.engine.arg_utils import AsyncEngineArgs
 from vllm.logger import init_logger
 from vllm.profiler import BenchmarkConfig
 from vllm.profiler.e2e_metrics import E2EMetricsCollector
 from vllm.profiler.hash_id_mapper import HashIDMapper
 from vllm.profiler.trace_loader import TraceLoader
 from vllm.profiler.trace_scheduler import TraceScheduler
+from vllm.v1.engine.async_llm import AsyncLLM
 
 logger = init_logger(__name__)
 
@@ -121,32 +124,34 @@ def run_e2e_benchmark_single_rank(
     logger.info(f"Configuration directory: tmp_benchmark/{config_subdir}/")
     
     try:
-        # Initialize vLLM
+        # Initialize AsyncLLM (vLLM v1 async engine)
         if dp_size > 1:
-            logger.info(f"Initializing vLLM engine for DP rank {dp_rank}/{dp_size}...")
+            logger.info(f"Initializing AsyncLLM engine for DP rank {dp_rank}/{dp_size}...")
         else:
-            logger.info("Initializing vLLM engine...")
+            logger.info("Initializing AsyncLLM engine (vLLM v1)...")
         
-        llm_kwargs = {
-            "model": config.model_path,
-            "tensor_parallel_size": config.tensor_parallel_size,
-            "pipeline_parallel_size": config.pipeline_parallel_size,
-            "gpu_memory_utilization": config.gpu_memory_utilization,
-            "dtype": config.dtype,
-            "disable_log_stats": False,  # Enable metrics collection
-        }
+        # Build AsyncEngineArgs
+        engine_args = AsyncEngineArgs(
+            model=config.model_path,
+            tensor_parallel_size=config.tensor_parallel_size,
+            pipeline_parallel_size=config.pipeline_parallel_size,
+            gpu_memory_utilization=config.gpu_memory_utilization,
+            dtype=config.dtype,
+            disable_log_stats=False,  # Enable metrics collection
+        )
         
         if config.max_model_len is not None:
-            llm_kwargs["max_model_len"] = config.max_model_len
+            engine_args.max_model_len = config.max_model_len
         
         if not config.enable_cuda_graph:
-            llm_kwargs["enforce_eager"] = True
+            engine_args.enforce_eager = True
         
         logger.info("Metrics collection enabled for E2E metrics")
         
-        llm = LLM(**llm_kwargs)
+        # Create AsyncLLM from engine args
+        llm = AsyncLLM.from_engine_args(engine_args)
         
-        logger.info("vLLM engine initialized successfully")
+        logger.info("AsyncLLM engine initialized successfully")
         
         # Load trace requests
         trace_loader = TraceLoader(
@@ -177,28 +182,15 @@ def run_e2e_benchmark_single_rank(
                 raise ValueError(f"DP rank {dp_rank} has no requests after sharding")
         
         # Create hash_id mapper
-        vocab_size = llm.llm_engine.model_config.get_vocab_size()
+        # AsyncLLM exposes model_config directly
+        vocab_size = llm.model_config.get_vocab_size()
         mapper = HashIDMapper(
             vocab_size=vocab_size,
             seed=config.trace_hash_id_seed,
         )
         logger.info(f"Initialized HashIDMapper with vocab_size={vocab_size}")
         
-        # Warmup phase (optional, using simple prompts)
-        if config.warmup_steps > 0:
-            logger.info(f"\nWarmup phase: running {config.warmup_steps} iterations")
-            warmup_prompts = ["Warmup prompt: The quick brown fox jumps over the lazy dog."] * 4
-            warmup_params = SamplingParams(temperature=0.0, max_tokens=16, ignore_eos=True)
-            for i in range(config.warmup_steps):
-                _ = llm.generate(warmup_prompts, warmup_params)
-            logger.info("Warmup phase completed")
-        
-        # E2E Metrics Collection
-        logger.info("\n" + "-" * 80)
-        logger.info("E2E Metrics Collection")
-        logger.info("-" * 80)
-        
-        # Create scheduler
+        # Create scheduler (before warmup to use same sampling params style)
         sampling_params = SamplingParams(
             temperature=0.0,
             max_tokens=128,  # Default, will be overridden per request
@@ -206,17 +198,48 @@ def run_e2e_benchmark_single_rank(
         )
         scheduler = TraceScheduler(llm, mapper, sampling_params)
         
-        # Run trace requests for E2E metrics
-        logger.info("Running trace requests for E2E metrics collection...")
-        e2e_start_time = time.perf_counter()
-        
-        e2e_outputs = asyncio.run(
-            scheduler.schedule_requests(
+        # Define combined warmup and trace function to use single event loop
+        # This is critical: AsyncLLM's internal state is tied to a single event loop
+        # Using multiple asyncio.run() calls causes EngineCore to crash
+        async def run_warmup_and_trace():
+            """Run warmup and trace requests in the same event loop."""
+            
+            # Warmup phase (optional, using simple prompts)
+            if config.warmup_steps > 0:
+                logger.info(f"\nWarmup phase: running {config.warmup_steps} iterations")
+                warmup_prompt = "Warmup prompt: The quick brown fox jumps over the lazy dog."
+                warmup_params = SamplingParams(temperature=0.0, max_tokens=16, ignore_eos=True)
+                
+                for i in range(config.warmup_steps):
+                    request_id = f"warmup_{i}"
+                    async for _ in llm.generate(
+                        request_id=request_id,
+                        prompt=warmup_prompt,
+                        sampling_params=warmup_params,
+                    ):
+                        pass  # Just drain the generator
+                
+                logger.info("Warmup phase completed")
+            
+            # E2E Metrics Collection
+            logger.info("\n" + "-" * 80)
+            logger.info("E2E Metrics Collection")
+            logger.info("-" * 80)
+            
+            # Run trace requests for E2E metrics
+            logger.info("Running trace requests for E2E metrics collection...")
+            
+            outputs = await scheduler.schedule_requests(
                 trace_requests,
                 realtime=config.trace_realtime_replay,
             )
-        )
+            
+            return outputs
         
+        # Run warmup and trace in a single event loop
+        # This ensures AsyncLLM's internal state remains consistent
+        e2e_start_time = time.perf_counter()
+        e2e_outputs = asyncio.run(run_warmup_and_trace())
         e2e_end_time = time.perf_counter()
         e2e_total_time = e2e_end_time - e2e_start_time
         
@@ -290,8 +313,14 @@ def run_e2e_benchmark_single_rank(
         logger.error(f"E2E benchmark failed: {e}", exc_info=True)
         raise
     finally:
-        # Cleanup is handled by caller
-        pass
+        # Cleanup AsyncLLM resources
+        try:
+            if 'llm' in locals():
+                logger.info("Shutting down AsyncLLM engine...")
+                llm.shutdown()
+                logger.info("AsyncLLM engine shutdown complete")
+        except Exception as e:
+            logger.warning(f"Error during AsyncLLM shutdown: {e}")
 
 
 def _run_rank_process(
@@ -329,6 +358,18 @@ def _run_rank_process(
         sys.exit(0)
     except Exception as e:
         logger.error(f"Process {dp_rank} failed: {e}", exc_info=True)
+        # Write error info to output file for debugging
+        try:
+            error_info = {
+                "error": str(e),
+                "traceback": traceback.format_exc(),
+                "dp_rank": dp_rank,
+                "gpu_indices": gpu_indices
+            }
+            with open(output_file, 'w') as f:
+                json.dump(error_info, f, indent=2)
+        except:
+            pass
         sys.exit(1)
 
 
@@ -497,13 +538,12 @@ def run_e2e_benchmark_multi_rank(config: BenchmarkConfig) -> Dict[str, Any]:
             logger.info(f"DP rank {rank} completed successfully")
     
     if not all_success:
-        # Clean up temp files even on failure
-        for file_path in rank_output_files:
-            try:
-                if os.path.exists(file_path):
-                    os.remove(file_path)
-            except:
-                pass
+        # DON'T delete temp files on failure - keep them for debugging
+        logger.error("Some DP ranks failed. Temporary output files preserved for debugging:")
+        for rank, file_path in enumerate(rank_output_files):
+            if os.path.exists(file_path):
+                file_size = os.path.getsize(file_path)
+                logger.error(f"  DP rank {rank}: {file_path} ({file_size} bytes)")
         raise RuntimeError("One or more DP ranks failed")
     
     # Load all rank results

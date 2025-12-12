@@ -15,11 +15,11 @@ automatically overridden for each configuration:
 
 Usage with E2E sweep:
     python benchmarks/e2e_sweep/run_e2e_sweep.py \
-        --num-gpus 4 \
+        --num-gpus 8 \
         --base-config benchmarks/e2e_sweep/example_configs/e2e_config_template.py \
-        --output-dir e2e_results/h100_8gpu_2min_test \
+        --output-dir e2e_results/h100_8gpu_4min_k1 \
         --gpu-type h100\
-        --gpu-ids "0,1,2,3"
+        --gpu-ids "0,1,2,3,4,5,6,7"
 
 Usage for single config testing:
     python benchmarks/benchmark_e2e_metrics.py \
@@ -57,13 +57,14 @@ config = BenchmarkConfig(
     # Path to trace file (JSONL format)
     # Format: {"timestamp": 1234.567, "prompt_len": 256, "output_len": 128}
     # Note: Can be overridden with --trace-file when using run_e2e_sweep.py
-    trace_file_path="/mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_trace_5min_sparse.jsonl",
+    trace_file_path="/mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_traceB_blksz_16.jsonl",
+    # trace_file_path="/mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_trace_5min_k10.jsonl",
     
     # Time range to use from trace (in minutes from start)
     # Example: (0, 5) = use first 5 minutes of trace data
     # Shorter range = faster benchmark, but less data
     # Recommended: 2-5 minutes for quick comparison, 10+ for production testing
-    trace_time_range_minutes=(0, 5),
+    trace_time_range_minutes=(0, 4),
     
     # Random seed for hash ID generation (for deterministic results)
     trace_hash_id_seed=42,

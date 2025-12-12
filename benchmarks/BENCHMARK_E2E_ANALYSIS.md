@@ -147,7 +147,7 @@ llm = LLM(**llm_kwargs)
 - `disable_log_stats=False`: **必须**启用，否则 `RequestOutput.metrics` 为空
 - `enforce_eager=True`: 禁用 CUDA graph，避免优化影响测量准确性
 
-**注意**：此阶段**不启用**算子 benchmark（不设置 `VLLM_OPERATOR_BENCHMARK_ENABLE`），确保 E2E 指标不受 profiling 开销影响
+**注意**：此阶段专注于 E2E 指标收集，不进行算子级别的 profiling
 
 #### 3.4 Trace 数据加载与分片（151-177行）
 

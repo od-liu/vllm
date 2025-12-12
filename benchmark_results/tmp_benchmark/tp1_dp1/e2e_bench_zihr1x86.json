@@ -1,0 +1,81 @@
+{
+  "config": {
+    "model_path": "/mnt/disk1/ljm/qwen_test/models/Qwen/Qwen3-8B",
+    "tensor_parallel_size": 1,
+    "pipeline_parallel_size": 1,
+    "max_model_len": null,
+    "batch_sizes": [
+      1,
+      4,
+      8
+    ],
+    "seq_lengths": [
+      512,
+      1024
+    ],
+    "warmup_steps": 5,
+    "benchmark_steps": 0,
+    "operators_to_benchmark": [
+      "all"
+    ],
+    "output_file": "e2e_results/test_single_gpu/tp1_pp1_dp1_e2e.json",
+    "include_per_layer_stats": true,
+    "include_summary_stats": true,
+    "verbose": true,
+    "enable_cuda_graph": false,
+    "dtype": "auto",
+    "gpu_memory_utilization": 0.5,
+    "use_trace_data": true,
+    "trace_file_path": "/mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_trace_5min_k10.jsonl",
+    "trace_time_range_minutes": [
+      0,
+      5
+    ],
+    "trace_hash_id_seed": 42,
+    "trace_realtime_replay": true,
+    "data_parallel_size": 1,
+    "enable_e2e_metrics": true
+  },
+  "metadata": {
+    "timestamp": "2025-12-04 06:59:11",
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "dp_rank": 0,
+    "dp_size": 1
+  },
+  "e2e_metrics": {
+    "num_requests": 686,
+    "num_valid_requests": 686,
+    "total_time_seconds": 303.3858716539107,
+    "num_ranks": 1,
+    "ttft_ms": {
+      "mean": 47.920667395299795,
+      "p50": 47.25921154022217,
+      "p90": 68.82643699645996,
+      "p99": 176.80495977401733
+    },
+    "tpot_ms": {
+      "mean": 19.66710647312879,
+      "p50": 21.84884613379836,
+      "p90": 28.53993775633474,
+      "p99": 31.76496179083521
+    },
+    "e2e_latency_ms": {
+      "mean": 1539.7736580462708,
+      "p50": 611.7738799657673,
+      "p90": 2959.035756997764,
+      "p99": 16805.818788008644
+    },
+    "queued_time_ms": {
+      "mean": 0.7529128159589131,
+      "p50": 0.008099013939499855,
+      "p90": 0.01074792817234993,
+      "p99": 0.18450859934091557
+    },
+    "total_prompt_tokens": 545847,
+    "total_generation_tokens": 53184,
+    "throughput": {
+      "tokens_per_second": 1974.4854852151725
+    }
+  }
+}

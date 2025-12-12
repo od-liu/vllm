@@ -293,9 +293,35 @@ class KVCacheManager:
             num_encoder_tokens=num_encoder_tokens,
         )
 
-        if num_blocks_to_allocate > self.block_pool.get_num_free_blocks():
+        num_free_blocks = self.block_pool.get_num_free_blocks()
+        num_cached_blocks = len(self.block_pool.cached_block_hash_to_block)
+        
+        if num_blocks_to_allocate > num_free_blocks:
             # Cannot allocate new blocks
+            memory_stats = self.block_pool.get_memory_stats()
+            logger.warning(
+                "Failed to allocate blocks for request %s: "
+                "need %d blocks, but only %d free blocks available. "
+                "Cached blocks: %d, Total blocks: %d, Usage: %.2f%%. "
+                "Memory stats: %s",
+                request.request_id,
+                num_blocks_to_allocate,
+                num_free_blocks,
+                num_cached_blocks,
+                self.block_pool.num_gpu_blocks,
+                self.block_pool.get_usage() * 100,
+                memory_stats,
+            )
             return None
+        
+        logger.debug(
+            "Allocating blocks for request %s: need %d blocks, "
+            "free blocks: %d, cached blocks: %d",
+            request.request_id,
+            num_blocks_to_allocate,
+            num_free_blocks,
+            num_cached_blocks,
+        )
 
         # Touch the computed blocks to make sure they won't be evicted.
         if self.enable_caching:
@@ -312,9 +338,25 @@ class KVCacheManager:
                 request.request_id, new_computed_block_list
             )
 
-        new_blocks = self.coordinator.allocate_new_blocks(
-            request.request_id, num_tokens_need_slot, num_encoder_tokens
-        )
+        try:
+            new_blocks = self.coordinator.allocate_new_blocks(
+                request.request_id, num_tokens_need_slot, num_encoder_tokens
+            )
+        except ValueError as e:
+            # Block allocation failed, return None to trigger preemption
+            memory_stats = self.block_pool.get_memory_stats()
+            logger.error(
+                "Exception during block allocation for request %s: %s. "
+                "Free blocks: %d, Cached blocks: %d, Needed blocks: %d. "
+                "Memory stats: %s",
+                request.request_id,
+                str(e),
+                self.block_pool.get_num_free_blocks(),
+                len(self.block_pool.cached_block_hash_to_block),
+                num_blocks_to_allocate,
+                memory_stats,
+            )
+            return None
 
         # P/D: delay caching blocks if we have to recv from
         # remote. Update state for locally cached blocks.
@@ -329,6 +371,16 @@ class KVCacheManager:
             num_computed_tokens + num_new_tokens, request.num_tokens
         )
         self.coordinator.cache_blocks(request, num_tokens_to_cache)
+
+        # Log successful allocation
+        total_new_blocks = sum(len(blocks) for blocks in new_blocks)
+        logger.debug(
+            "Successfully allocated %d new blocks for request %s. "
+            "Free blocks after allocation: %d",
+            total_new_blocks,
+            request.request_id,
+            self.block_pool.get_num_free_blocks(),
+        )
 
         return self.create_kv_cache_blocks(new_blocks)
 

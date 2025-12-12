@@ -1,37 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
-"""Example configuration for two-phase benchmarking (E2E metrics + Operator performance).
+"""Example configuration for E2E metrics benchmarking.
 
-This configuration enables both end-to-end metrics collection and operator performance
-benchmarking using trace data. The benchmark will automatically run in two phases:
-1. Phase 1: Collect E2E metrics (TTFT, TPOT, latency, throughput) with operator benchmark disabled
-2. Phase 2: Collect operator performance with operator benchmark enabled
-
-Both phases use the same trace data to ensure consistency.
+This configuration enables end-to-end metrics collection using trace data.
 
 命令行示例：
-# 完整的两阶段 benchmark sweep（推荐）
-python benchmarks/run_benchmarks.py \
-    --num-gpus 4 \
-    --base-config benchmarks/operator_configs/e2e_trace_config.py \
-    --output-dir benchmark_results/4gpu_sweep \
-    --gpu-ids "2,3,4,5" \
-    --gpu-type "h100"
-
-# 单独运行 Phase 1 (E2E metrics)
+# 运行 E2E metrics benchmark
 python benchmarks/benchmark_e2e_metrics.py \
     --config benchmarks/operator_configs/e2e_trace_config.py \
     --phase 1
-
-# 单独运行 Phase 2 (Operator profiling)
-python benchmarks/benchmark_operators.py \
-    --config benchmarks/operator_configs/e2e_trace_config.py \
-    --phase 2
-
-python benchmarks/run_benchmarks.py \
-        --num-gpus 4 \
-        --base-config benchmarks/operator_configs/e2e_trace_config.py \
-        --output-dir benchmark_results/test_run --gpu-ids "0,1,2,3"
 """
 
 from vllm.profiler import BenchmarkConfig
@@ -48,8 +25,6 @@ config = BenchmarkConfig(
     
     warmup_steps=5,
     benchmark_steps=0,  # Can be 0 in trace mode (not used)
-    
-    operators_to_benchmark=["all"],
     
     # Trace mode configuration
     use_trace_data=True,

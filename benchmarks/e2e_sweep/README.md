@@ -348,7 +348,6 @@ For issues or questions:
 ## Related Tools
 
 - `benchmarks/benchmark_e2e_metrics.py` - Single-config E2E benchmark
-- `benchmarks/run_benchmarks.py` - Full two-phase benchmark (E2E + operators)
 - `benchmarks/visualize_benchmark_results.py` - Full benchmark visualizer
 
 

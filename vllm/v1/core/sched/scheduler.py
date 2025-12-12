@@ -274,6 +274,8 @@ class Scheduler(SchedulerInterface):
 
             # Schedule newly needed KV blocks for the request.
             with record_function_or_nullcontext("schedule: allocate_slots"):
+                preempt_attempts = 0
+                max_preempt_attempts = len(self.running) + 1
                 while True:
                     new_blocks = self.kv_cache_manager.allocate_slots(
                         request,
@@ -283,10 +285,40 @@ class Scheduler(SchedulerInterface):
 
                     if new_blocks is not None:
                         # The request can be scheduled.
+                        if preempt_attempts > 0:
+                            logger.info(
+                                "Successfully allocated blocks for request %s after %d preempt attempts",
+                                request.request_id,
+                                preempt_attempts,
+                            )
+                        break
+
+                    preempt_attempts += 1
+                    if preempt_attempts > max_preempt_attempts:
+                        memory_stats = self.kv_cache_manager.block_pool.get_memory_stats()
+                        logger.error(
+                            "Exceeded max preempt attempts (%d) for request %s. "
+                            "This may indicate a deadlock or memory leak. "
+                            "Free blocks: %d, Running requests: %d. "
+                            "Memory stats: %s",
+                            max_preempt_attempts,
+                            request.request_id,
+                            self.kv_cache_manager.block_pool.get_num_free_blocks(),
+                            len(self.running),
+                            memory_stats,
+                        )
                         break
 
                     # The request cannot be scheduled.
                     # Preempt the lowest-priority request.
+                    logger.debug(
+                        "Block allocation failed for request %s (attempt %d). "
+                        "Attempting to preempt a request. Free blocks: %d",
+                        request.request_id,
+                        preempt_attempts,
+                        self.kv_cache_manager.block_pool.get_num_free_blocks(),
+                    )
+                    
                     if self.policy == SchedulingPolicy.PRIORITY:
                         preempted_req = max(
                             self.running,
@@ -318,8 +350,12 @@ class Scheduler(SchedulerInterface):
                     else:
                         preempted_req = self.running.pop()
 
+                    free_blocks_before = self.kv_cache_manager.block_pool.get_num_free_blocks()
                     self.kv_cache_manager.free(preempted_req)
                     self.encoder_cache_manager.free(preempted_req)
+                    free_blocks_after = self.kv_cache_manager.block_pool.get_num_free_blocks()
+                    freed_blocks = free_blocks_after - free_blocks_before
+                    
                     preempted_req.status = RequestStatus.PREEMPTED
                     preempted_req.num_computed_tokens = 0
                     preempted_req.num_preemptions += 1
@@ -328,14 +364,43 @@ class Scheduler(SchedulerInterface):
                             EngineCoreEventType.PREEMPTED, scheduled_timestamp
                         )
 
+                    logger.info(
+                        "Preempted request %s to free blocks for request %s. "
+                        "Freed %d blocks (free blocks: %d -> %d)",
+                        preempted_req.request_id,
+                        request.request_id,
+                        freed_blocks,
+                        free_blocks_before,
+                        free_blocks_after,
+                    )
+
                     self.waiting.prepend_request(preempted_req)
                     preempted_reqs.append(preempted_req)
                     if preempted_req == request:
                         # No more request to preempt. Cannot schedule this request.
+                        logger.warning(
+                            "Cannot schedule request %s: no more requests to preempt. "
+                            "Free blocks: %d, Running requests: %d",
+                            request.request_id,
+                            free_blocks_after,
+                            len(self.running),
+                        )
                         break
 
             if new_blocks is None:
                 # Cannot schedule this request.
+                memory_stats = self.kv_cache_manager.block_pool.get_memory_stats()
+                logger.error(
+                    "Failed to schedule request %s after %d preempt attempts. "
+                    "Free blocks: %d, Running requests: %d, Waiting requests: %d. "
+                    "Memory stats: %s",
+                    request.request_id,
+                    preempt_attempts,
+                    self.kv_cache_manager.block_pool.get_num_free_blocks(),
+                    len(self.running),
+                    len(self.waiting),
+                    memory_stats,
+                )
                 break
 
             # Schedule the request.

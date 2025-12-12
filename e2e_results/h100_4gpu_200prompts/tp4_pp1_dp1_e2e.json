@@ -1,0 +1,121 @@
+{
+  "config": {
+    "model_path": "/mnt/disk1/ljm/qwen_test/models/Qwen/Qwen3-8B",
+    "tensor_parallel_size": 4,
+    "pipeline_parallel_size": 1,
+    "max_model_len": null,
+    "batch_sizes": [
+      1,
+      4,
+      8
+    ],
+    "seq_lengths": [
+      512,
+      1024
+    ],
+    "warmup_steps": 5,
+    "benchmark_steps": 0,
+    "operators_to_benchmark": [
+      "all"
+    ],
+    "output_file": "e2e_results/h100_4gpu_200prompts/tp4_pp1_dp1_e2e.json",
+    "include_per_layer_stats": true,
+    "include_summary_stats": true,
+    "verbose": true,
+    "enable_cuda_graph": false,
+    "dtype": "auto",
+    "gpu_memory_utilization": 0.5,
+    "use_trace_data": true,
+    "trace_file_path": "/mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_trace_5min_200prompts.jsonl",
+    "trace_time_range_minutes": [
+      0,
+      4
+    ],
+    "trace_hash_id_seed": 42,
+    "trace_realtime_replay": true,
+    "data_parallel_size": 1,
+    "enable_e2e_metrics": true
+  },
+  "metadata": {
+    "timestamp": "2025-12-10 01:16:40",
+    "cuda_available": true,
+    "cuda_device_count": 4,
+    "dp_rank": 0,
+    "dp_size": 1
+  },
+  "e2e_metrics_aggregated": {
+    "num_requests": 175,
+    "num_valid_requests": 175,
+    "total_time_seconds": 241.12596112908795,
+    "num_ranks": 1,
+    "ttft_ms": {
+      "mean": 26.220273971557617,
+      "p50": 22.940635681152344,
+      "p90": 41.82448387145996,
+      "p99": 66.55063152313221
+    },
+    "tpot_ms": {
+      "mean": 11.617455878109023,
+      "p50": 10.977477417327464,
+      "p90": 11.683902780597025,
+      "p99": 20.159312882296298
+    },
+    "e2e_latency_ms": {
+      "mean": 626.1712656995015,
+      "p50": 505.6909918785095,
+      "p90": 1253.4334105439484,
+      "p99": 1838.4340434148892
+    },
+    "queued_time_ms": {
+      "mean": 0.09701996775610107,
+      "p50": 0.14838110655546188,
+      "p90": 0.17926841974258423,
+      "p99": 0.20497526973485938
+    },
+    "total_prompt_tokens": 120010,
+    "total_generation_tokens": 9293,
+    "throughput": {
+      "tokens_per_second": 536.2466961024451
+    }
+  },
+  "e2e_metrics_per_rank": [
+    {
+      "dp_rank": 0,
+      "e2e_metrics": {
+        "num_requests": 175,
+        "num_valid_requests": 175,
+        "total_time_seconds": 241.12596112908795,
+        "num_ranks": 1,
+        "ttft_ms": {
+          "mean": 26.220273971557617,
+          "p50": 22.940635681152344,
+          "p90": 41.82448387145996,
+          "p99": 66.55063152313221
+        },
+        "tpot_ms": {
+          "mean": 11.617455878109023,
+          "p50": 10.977477417327464,
+          "p90": 11.683902780597025,
+          "p99": 20.159312882296298
+        },
+        "e2e_latency_ms": {
+          "mean": 626.1712656995015,
+          "p50": 505.6909918785095,
+          "p90": 1253.4334105439484,
+          "p99": 1838.4340434148892
+        },
+        "queued_time_ms": {
+          "mean": 0.09701996775610107,
+          "p50": 0.14838110655546188,
+          "p90": 0.17926841974258423,
+          "p99": 0.20497526973485938
+        },
+        "total_prompt_tokens": 120010,
+        "total_generation_tokens": 9293,
+        "throughput": {
+          "tokens_per_second": 536.2466961024451
+        }
+      }
+    }
+  ]
+}

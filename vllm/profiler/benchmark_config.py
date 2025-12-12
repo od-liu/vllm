@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
-"""Configuration dataclasses for operator benchmarking."""
+"""Configuration dataclasses for benchmarking."""
 
 from dataclasses import dataclass, field
 from typing import List, Optional, Tuple
@@ -8,10 +8,10 @@ from typing import List, Optional, Tuple
 
 @dataclass
 class BenchmarkConfig:
-    """Configuration for operator benchmarking.
+    """Configuration for benchmarking.
     
     This configuration allows you to control model loading, benchmark parameters,
-    operator selection, and output settings.
+    and output settings. Used for E2E metrics benchmarking.
     """
     
     # Model configuration
@@ -52,22 +52,14 @@ class BenchmarkConfig:
     Note: Can be 0 in trace mode (use_trace_data=True), where it's not used.
     """
     
-    # Operator selection
+    # Operator selection (deprecated - no longer used)
     operators_to_benchmark: List[str] = field(
-        default_factory=lambda: ["attention", "linear", "layernorm", "mlp", "activation"]
+        default_factory=lambda: ["all"]
     )
-    """List of operator types to benchmark. 
+    """List of operator types to benchmark (deprecated - no longer used).
     
-    Supported types:
-    - "attention": Attention layers
-    - "linear": Linear/fully-connected layers
-    - "layernorm": Layer normalization (RMSNorm, LayerNorm)
-    - "mlp": MLP/FFN layers
-    - "activation": Activation functions (SiLU, GELU, etc.)
-    - "embedding": Embedding layers
-    - "moe": Mixture of Experts layers
-    - "mamba": Mamba/SSM layers
-    - "all": Benchmark all supported operators
+    This field is kept for backward compatibility but is not used by any
+    current benchmark scripts. It can be safely ignored or omitted.
     """
     
     # Output configuration
@@ -117,9 +109,8 @@ class BenchmarkConfig:
     enable_e2e_metrics: bool = False
     """Whether to collect end-to-end metrics (TTFT, TPOT, etc.).
     
-    When enabled with use_trace_data=True, the benchmark will run in two phases:
-    1. Phase 1: Collect E2E metrics with operator benchmark disabled
-    2. Phase 2: Collect operator performance with operator benchmark enabled
+    When enabled with use_trace_data=True, the benchmark will collect E2E metrics
+    from trace-based request replay.
     """
     
     def validate(self) -> None:
@@ -145,8 +136,7 @@ class BenchmarkConfig:
         if self.warmup_steps < 0:
             raise ValueError("warmup_steps must be >= 0")
         
-        if not self.operators_to_benchmark:
-            raise ValueError("operators_to_benchmark must not be empty")
+        # operators_to_benchmark is deprecated and no longer validated
         
         if self.gpu_memory_utilization <= 0 or self.gpu_memory_utilization > 1:
             raise ValueError("gpu_memory_utilization must be in (0, 1]")

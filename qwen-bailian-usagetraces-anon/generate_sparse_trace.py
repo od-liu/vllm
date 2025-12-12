@@ -23,7 +23,7 @@ def generate_hash_ids(input_length, output_length):
     num_hash_ids = int((input_length + output_length) / 1.3)
     return list(range(num_hash_ids))
 
-def generate_requests(num_requests=60, duration=300):
+def generate_requests(num_requests=600, duration=300):
     """
     Generate trace requests with sparse timing.
     
@@ -127,9 +127,10 @@ def save_trace(requests, output_file):
 
 if __name__ == "__main__":
     # Generate sparse 5-minute trace
-    requests = generate_requests(num_requests=60, duration=300)
+    num_requests = 6000
+    requests = generate_requests(num_requests, duration=300)
     
-    output_file = "qwen_trace_5min_sparse.jsonl"
+    output_file = f"qwen_trace_5min_{num_requests}prompts.jsonl"
     save_trace(requests, output_file)
     
     print(f"\n✅ Done! Use this trace with:")

@@ -35,8 +35,6 @@ def check_imports():
     # Check main benchmark scripts
     scripts = [
         "benchmarks.benchmark_e2e_metrics",
-        "benchmarks.benchmark_operators",
-        "benchmarks.run_benchmarks",
     ]
     
     for script in scripts:
@@ -108,7 +106,6 @@ def check_config_file(config_path: str):
             'data_parallel_size',
             'use_trace_data',
             'enable_e2e_metrics',
-            'operators_to_benchmark',
             'output_file',
         ]
         
@@ -227,8 +224,6 @@ def check_scripts_exist():
     
     scripts = [
         "benchmarks/benchmark_e2e_metrics.py",
-        "benchmarks/benchmark_operators.py",
-        "benchmarks/run_benchmarks.py",
     ]
     
     for script in scripts:
@@ -305,10 +300,8 @@ def main():
         print("\nYou can now run:")
         if args.config:
             print(f"  python benchmarks/benchmark_e2e_metrics.py --config {args.config} --phase 1")
-            print(f"  python benchmarks/benchmark_operators.py --config {args.config} --phase 2")
-            print(f"  python benchmarks/run_benchmarks.py --num-gpus <N> --base-config {args.config} --output-dir <DIR>")
         else:
-            print("  python benchmarks/run_benchmarks.py --num-gpus <N> --base-config <config> --output-dir <DIR>")
+            print("  python benchmarks/benchmark_e2e_metrics.py --config <config> --phase 1")
         return 0
 
 

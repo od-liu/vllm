@@ -1,0 +1,108 @@
+================================================================================
+E2E BENCHMARK SWEEP RESULTS SUMMARY
+================================================================================
+
+
+TP1_PP1_DP8
+----------------------------------------
+  Requests: 3076
+  Total Time: 134.3 seconds
+
+  TTFT (Time to First Token):
+    Mean:   64.59 ms
+    Median: 38.35 ms
+    P90:    154.83 ms
+    P99:    227.85 ms
+
+  TPOT (Time per Output Token):
+    Mean:   14.37 ms
+    Median: 16.05 ms
+    P90:    18.46 ms
+    P99:    20.15 ms
+
+  E2E Latency:
+    Mean:   3302.24 ms
+    Median: 1272.11 ms
+    P90:    10601.01 ms
+    P99:    13132.96 ms
+
+  Throughput:
+    Tokens/s: 21346.83
+
+TP2_PP1_DP4
+----------------------------------------
+  Requests: 3076
+  Total Time: 178.1 seconds
+
+  TTFT (Time to First Token):
+    Mean:   48.47 ms
+    Median: 33.93 ms
+    P90:    96.88 ms
+    P99:    130.49 ms
+
+  TPOT (Time per Output Token):
+    Mean:   15.41 ms
+    Median: 12.94 ms
+    P90:    20.63 ms
+    P99:    20.89 ms
+
+  E2E Latency:
+    Mean:   3461.30 ms
+    Median: 1484.29 ms
+    P90:    10698.21 ms
+    P99:    11231.59 ms
+
+  Throughput:
+    Tokens/s: 16099.05
+
+TP4_PP1_DP2
+----------------------------------------
+  Requests: 3076
+  Total Time: 347.4 seconds
+
+  TTFT (Time to First Token):
+    Mean:   42.10 ms
+    Median: 30.93 ms
+    P90:    81.12 ms
+    P99:    88.79 ms
+
+  TPOT (Time per Output Token):
+    Mean:   15.49 ms
+    Median: 12.40 ms
+    P90:    22.46 ms
+    P99:    22.83 ms
+
+  E2E Latency:
+    Mean:   3498.97 ms
+    Median: 1410.20 ms
+    P90:    10191.90 ms
+    P99:    10787.06 ms
+
+  Throughput:
+    Tokens/s: 8256.15
+
+TP8_PP1_DP1
+----------------------------------------
+  Requests: 3076
+  Total Time: 648.1 seconds
+
+  TTFT (Time to First Token):
+    Mean:   25.88 ms
+    Median: 21.93 ms
+    P90:    37.13 ms
+    P99:    68.10 ms
+
+  TPOT (Time per Output Token):
+    Mean:   12.40 ms
+    Median: 11.54 ms
+    P90:    18.84 ms
+    P99:    20.33 ms
+
+  E2E Latency:
+    Mean:   1042.55 ms
+    Median: 649.10 ms
+    P90:    1892.72 ms
+    P99:    10363.91 ms
+
+  Throughput:
+    Tokens/s: 4425.00

@@ -356,11 +356,45 @@ class BlockPool:
         """
         # Materialize the iterable to allow multiple passes.
         blocks_list = list(ordered_blocks)
+        if not blocks_list:
+            return
+        
+        # Log before freeing
+        initial_ref_cnts = [block.ref_cnt for block in blocks_list]
+        cached_blocks_count = sum(1 for block in blocks_list if block.block_hash is not None)
+        
         for block in blocks_list:
             block.ref_cnt -= 1
-        self.free_block_queue.append_n(
-            [block for block in blocks_list if block.ref_cnt == 0 and not block.is_null]
+        
+        blocks_to_free = [
+            block for block in blocks_list if block.ref_cnt == 0 and not block.is_null
+        ]
+        blocks_not_freed = len(blocks_list) - len(blocks_to_free)
+        
+        self.free_block_queue.append_n(blocks_to_free)
+        
+        # Log after freeing
+        logger.debug(
+            "Freed %d blocks (%d added to free queue, %d still in use). "
+            "Cached blocks: %d, Free blocks now: %d. "
+            "Ref_cnt distribution before free: min=%d, max=%d, avg=%.2f",
+            len(blocks_list),
+            len(blocks_to_free),
+            blocks_not_freed,
+            cached_blocks_count,
+            self.get_num_free_blocks(),
+            min(initial_ref_cnts) if initial_ref_cnts else 0,
+            max(initial_ref_cnts) if initial_ref_cnts else 0,
+            sum(initial_ref_cnts) / len(initial_ref_cnts) if initial_ref_cnts else 0.0,
         )
+        
+        # Warn if blocks were not freed
+        if blocks_not_freed > 0:
+            logger.warning(
+                "%d blocks were not freed (ref_cnt > 0). "
+                "This may indicate a reference counting issue.",
+                blocks_not_freed,
+            )
 
     def reset_prefix_cache(self) -> bool:
         """Reset prefix cache. This function may be used in RLHF
@@ -400,7 +434,19 @@ class BlockPool:
         Returns:
             The number of free blocks.
         """
-        return self.free_block_queue.num_free_blocks
+        num_free = self.free_block_queue.num_free_blocks
+        # Only log when free blocks are low to avoid performance impact
+        if num_free < self.num_gpu_blocks * 0.1:  # Less than 10% free
+            logger.debug(
+                "Low free blocks: %d / %d (%.2f%%). "
+                "Cached blocks: %d, Usage: %.2f%%",
+                num_free,
+                self.num_gpu_blocks - 1,  # Exclude null block
+                (num_free / (self.num_gpu_blocks - 1)) * 100 if self.num_gpu_blocks > 1 else 0,
+                len(self.cached_block_hash_to_block),
+                self.get_usage() * 100,
+            )
+        return num_free
 
     def get_usage(self) -> float:
         """Get the KV cache usage.
@@ -414,6 +460,39 @@ class BlockPool:
         if not total_gpu_blocks:
             return 0
         return 1.0 - (self.get_num_free_blocks() / total_gpu_blocks)
+
+    def get_memory_stats(self) -> dict[str, Any]:
+        """Get detailed memory statistics for debugging.
+
+        Returns:
+            A dictionary containing memory statistics.
+        """
+        num_free = self.get_num_free_blocks()
+        num_cached = len(self.cached_block_hash_to_block)
+        total_blocks = self.num_gpu_blocks - 1  # Exclude null block
+        num_used = total_blocks - num_free
+        
+        # Count blocks by ref_cnt
+        ref_cnt_distribution: dict[int, int] = {}
+        cached_blocks_in_free_queue = 0
+        for block in self.blocks:
+            if block.is_null:
+                continue
+            ref_cnt = block.ref_cnt
+            ref_cnt_distribution[ref_cnt] = ref_cnt_distribution.get(ref_cnt, 0) + 1
+            # Count cached blocks that are in free queue (ref_cnt=0 but have hash)
+            if ref_cnt == 0 and block.block_hash is not None:
+                cached_blocks_in_free_queue += 1
+        
+        return {
+            "total_blocks": total_blocks,
+            "free_blocks": num_free,
+            "used_blocks": num_used,
+            "cached_blocks": num_cached,
+            "cached_blocks_in_free_queue": cached_blocks_in_free_queue,
+            "usage_percent": self.get_usage() * 100,
+            "ref_cnt_distribution": ref_cnt_distribution,
+        }
 
     def take_events(self) -> list[KVCacheEvent]:
         """Atomically takes all events and clears the queue.

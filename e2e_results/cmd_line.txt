@@ -1,0 +1,6 @@
+python benchmarks/e2e_sweep/run_e2e_sweep.py \
+    --num-gpus 4 \
+    --base-config benchmarks/e2e_sweep/example_configs/e2e_config_template.py \
+    --output-dir e2e_results/h100_4gpu_600prompts \
+    --gpu-ids "0,1,2,3" \
+    --trace-file /mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_trace_5min_600prompts.jsonl

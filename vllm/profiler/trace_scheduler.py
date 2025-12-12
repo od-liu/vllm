@@ -3,7 +3,8 @@
 """Trace-based request scheduler for operator benchmarking."""
 
 import asyncio
-import threading
+import os
+import sys
 import time
 from typing import Any, Dict, List, Optional
 
@@ -14,10 +15,12 @@ except ImportError:
 
 import torch
 
-from vllm import LLM, SamplingParams
+from vllm import SamplingParams
+from vllm.inputs import TokensPrompt
 from vllm.logger import init_logger
 from vllm.profiler.hash_id_mapper import HashIDMapper
 from vllm.profiler.trace_loader import TraceRequest
+from vllm.v1.engine.async_llm import AsyncLLM
 
 logger = init_logger(__name__)
 
@@ -30,34 +33,42 @@ class TraceScheduler:
     
     def __init__(
         self,
-        llm: LLM,
+        llm: AsyncLLM,
         mapper: HashIDMapper,
         sampling_params: SamplingParams,
+        max_concurrent: int = 5,
     ):
         """
         Initialize trace scheduler.
         
         Args:
-            llm: vLLM instance for generating outputs
+            llm: AsyncLLM instance for generating outputs (vLLM v1 async engine)
             mapper: HashIDMapper for converting hash_ids to token_ids
             sampling_params: Sampling parameters for generation
+            max_concurrent: Maximum number of concurrent requests (default: 5)
         """
         self.llm = llm
         self.mapper = mapper
         self.sampling_params = sampling_params
+        self.max_concurrent = max_concurrent
+        
+        logger.info(
+            f"Initialized TraceScheduler with AsyncLLM "
+            f"(max_concurrent={max_concurrent})"
+        )
     
     def _create_prompt_from_trace(
         self,
         trace_req: TraceRequest,
-    ) -> Dict[str, Any]:
+    ) -> TokensPrompt:
         """
-        Create a prompt dictionary from trace request.
+        Create a TokensPrompt from trace request for AsyncLLM.
         
         Args:
             trace_req: TraceRequest object
             
         Returns:
-            Dictionary with 'prompt_token_ids' key containing token IDs
+            TokensPrompt with 'prompt_token_ids' containing token IDs
         """
         # Map hash_ids to token_ids
         token_ids = self.mapper.map_hash_ids(trace_req.hash_ids)
@@ -88,11 +99,8 @@ class TraceScheduler:
             )
             token_ids = [int(t) for t in token_ids]
         
-        # Return format compatible with LLM.generate()
-        # Format: {"prompt_token_ids": list[int]}
-        return {
-            "prompt_token_ids": token_ids,
-        }
+        # Return TokensPrompt format for AsyncLLM
+        return TokensPrompt(prompt_token_ids=token_ids)
     
     async def _schedule_single_request(
         self,
@@ -172,23 +180,16 @@ class TraceScheduler:
             top_k=self.sampling_params.top_k,
         )
         
-        # Submit request
-        # Note: LLM.generate() is synchronous, so we run it in executor
-        # to avoid blocking the event loop
-        # Disable tqdm progress bar for individual requests to avoid clutter
-        loop = asyncio.get_event_loop()
-        
         # Calculate timeout with conservative estimates for long sequences
         # Get TP size for overhead calculation (try multiple methods)
         tp_size = 1  # Default
         try:
-            # Method 1: From parallel_config (most reliable)
-            if hasattr(self.llm.llm_engine, 'parallel_config'):
+            # Method 1: AsyncLLM exposes vllm_config directly
+            if hasattr(self.llm, 'vllm_config'):
+                tp_size = self.llm.vllm_config.parallel_config.tensor_parallel_size
+            # Method 2: Try legacy llm_engine path (for compatibility)
+            elif hasattr(self.llm, 'llm_engine') and hasattr(self.llm.llm_engine, 'parallel_config'):
                 tp_size = self.llm.llm_engine.parallel_config.tensor_parallel_size
-            # Method 2: From model_config
-            elif hasattr(self.llm.llm_engine, 'model_config'):
-                if hasattr(self.llm.llm_engine.model_config, 'tensor_parallel_size'):
-                    tp_size = self.llm.llm_engine.model_config.tensor_parallel_size
         except Exception as e:
             logger.debug(f"Could not get TP size from engine: {e}")
             # Method 3: From environment variable
@@ -268,41 +269,39 @@ class TraceScheduler:
             f"input={trace_req.input_length}, output={max_tokens}, TP={tp_size}"
         )
         
-        # Start heartbeat monitor thread
-        heartbeat_stop = threading.Event()
-        
-        def heartbeat_monitor():
-            """Log heartbeat messages every 30 seconds to show request is still running."""
-            start = time.time()
-            interval = 30
-            while not heartbeat_stop.is_set():
-                if heartbeat_stop.wait(interval):
-                    break
-                elapsed = time.time() - start
-                logger.info(
-                    f"  ⏱ Request {trace_req.chat_id} still running "
-                    f"({elapsed:.0f}s / {timeout:.0f}s)..."
-                )
-        
-        heartbeat_thread = threading.Thread(target=heartbeat_monitor, daemon=True)
-        heartbeat_thread.start()
+        # Use AsyncLLM's generate method directly (no thread pool needed!)
+        # Generate a unique request_id for this request
+        request_id = f"trace_req_{trace_req.chat_id}"
         
         try:
-            result = await asyncio.wait_for(
-                loop.run_in_executor(
-                None,
-                lambda: self.llm.generate(
-                    [prompt_dict],
+            # AsyncLLM.generate() returns an AsyncGenerator
+            # We need to iterate through it to get the final result
+            result = None
+            
+            async def generate_with_timeout():
+                """Wrapper to collect all outputs from async generator."""
+                nonlocal result
+                async for output in self.llm.generate(
+                    request_id=request_id,
+                    prompt=prompt_dict,
                     sampling_params=sampling_params,
-                    use_tqdm=False,  # Disable individual progress bars
-                )
-                ),
+                ):
+                    # Keep updating with latest output
+                    result = output
+                    # The final output will have finished=True
+                    if output.finished:
+                        break
+                return result
+            
+            # Apply timeout to the entire generation process
+            result = await asyncio.wait_for(
+                generate_with_timeout(),
                 timeout=timeout
             )
-            heartbeat_stop.set()
-            return result[0] if result else None
+            return result
         except asyncio.TimeoutError:
-            heartbeat_stop.set()
+            # Abort the request on timeout
+            await self.llm.abort(request_id)
             logger.error(
                 f"\n{'='*80}\n"
                 f"❌ REQUEST TIMEOUT\n"
@@ -321,12 +320,11 @@ class TraceScheduler:
                 f"{'='*80}\n"
             )
             return None
-        except Exception as e:
-            heartbeat_stop.set()
-            logger.error(
-                f"Failed to generate for request {trace_req.chat_id}: {e}"
-            )
-            return None
+        # except Exception as e:
+        #     logger.error(
+        #         f"Failed to generate for request {trace_req.chat_id}: {e}"
+        #     )
+        #     return None
     
     async def schedule_requests(
         self,
@@ -419,10 +417,13 @@ class TraceScheduler:
                 return result
             
             tasks = [process_with_progress(req) for req in trace_requests]
-            outputs = await asyncio.gather(*tasks)
             
-            if pbar is not None:
-                pbar.close()
+            try:
+                outputs = await asyncio.gather(*tasks)
+            finally:
+                # Clean up progress bar
+                if pbar is not None:
+                    pbar.close()
             
             total_time = time.time() - base_time
             logger.info(
@@ -435,9 +436,9 @@ class TraceScheduler:
         logger.info("Scheduling requests with real-time intervals")
         
         # Limit concurrent requests to avoid GPU OOM
-        max_concurrent = 5  # Maximum concurrent requests (adjust based on GPU memory)
-        semaphore = asyncio.Semaphore(max_concurrent)
-        logger.info(f"  Maximum concurrent requests: {max_concurrent}")
+        # Use the max_concurrent value from __init__
+        semaphore = asyncio.Semaphore(self.max_concurrent)
+        logger.info(f"  Maximum concurrent requests: {self.max_concurrent}")
         
         # Create tasks for all requests with concurrency limit
         async def process_with_progress_realtime(req, req_index):
@@ -457,10 +458,12 @@ class TraceScheduler:
         
         # Wait for all tasks to complete
         logger.info("Executing trace requests...")
-        outputs = await asyncio.gather(*tasks)
-        
-        if pbar is not None:
-            pbar.close()
+        try:
+            outputs = await asyncio.gather(*tasks)
+        finally:
+            # Clean up progress bar
+            if pbar is not None:
+                pbar.close()
         
         total_time = time.time() - base_time
         logger.info(

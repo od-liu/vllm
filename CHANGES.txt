@@ -1,0 +1,214 @@
+AsyncLLM迁移 - 文件变更清单
+===============================
+
+修改日期: 2025-12-02
+修改原因: 解决请求58卡死问题 - 迁移到AsyncLLM
+修改类型: 架构级重构（从同步+线程池改为完全异步）
+
+==================================================
+修改的源代码文件 (2个)
+==================================================
+
+1. vllm/profiler/trace_scheduler.py
+   变更类型: 重大修改
+   主要变更:
+   - 导入: 移除 ThreadPoolExecutor, threading; 添加 AsyncLLM
+   - __init__: 移除 ThreadPoolExecutor 初始化
+   - _schedule_single_request: 
+     * 移除 run_in_executor 调用
+     * 移除 heartbeat 监控线程
+     * 使用 AsyncLLM.generate() 异步生成器
+   - schedule_requests: 移除 executor.shutdown() 调用
+   
+   影响范围: 所有使用 TraceScheduler 的代码
+   向后兼容: 否（需要传入 AsyncLLM 而不是 LLM）
+
+2. benchmarks/benchmark_e2e_metrics.py
+   变更类型: 重大修改
+   主要变更:
+   - 导入: 移除 LLM; 添加 AsyncLLM, AsyncEngineArgs
+   - run_e2e_benchmark_single_rank:
+     * 使用 AsyncEngineArgs 初始化
+     * 使用 AsyncLLM.from_engine_args()
+     * warmup 改为异步循环
+     * 添加 llm.shutdown() 清理
+   - vocab_size 访问: llm.llm_engine.model_config → llm.model_config
+   
+   影响范围: 所有调用此函数的benchmark脚本
+   向后兼容: 否（行为变化，但接口不变）
+
+==================================================
+新增文档文件 (4个)
+==================================================
+
+1. 迁移到AsyncLLM修复总结.md
+   内容: 详细的技术说明，包括修改细节、技术优势、测试方法
+
+2. AsyncLLM迁移快速指南.md
+   内容: 快速参考，关键变化对比，成功标志，故障排除
+
+3. verify_asyncllm.py
+   内容: 验证脚本，检查AsyncLLM是否可用和正常工作
+
+4. README_修改完成.md
+   内容: 修改总结和测试指南
+
+5. CHANGES.txt
+   内容: 本文件，详细的变更清单
+
+==================================================
+修改的文档文件 (1个)
+==================================================
+
+1. 修复完成总结.md
+   变更: 在"修复时间线"部分添加第四次修复说明
+
+==================================================
+关键代码变更详情
+==================================================
+
+### TraceScheduler.__init__
+
+之前:
+  def __init__(self, llm: LLM, mapper, sampling_params, max_concurrent=5):
+      self.executor = ThreadPoolExecutor(
+          max_workers=max_concurrent * 2,
+          thread_name_prefix="trace_scheduler"
+      )
+
+现在:
+  def __init__(self, llm: AsyncLLM, mapper, sampling_params, max_concurrent=5):
+      # 无ThreadPoolExecutor
+
+### TraceScheduler._schedule_single_request
+
+之前:
+  result = await asyncio.wait_for(
+      loop.run_in_executor(
+          self.executor,
+          lambda: self.llm.generate([prompt_dict], sampling_params)
+      ),
+      timeout=timeout
+  )
+
+现在:
+  async def generate_with_timeout():
+      nonlocal result
+      async for output in self.llm.generate(
+          request_id=request_id,
+          prompt=prompt_dict,
+          sampling_params=sampling_params,
+      ):
+          result = output
+          if output.finished:
+              break
+      return result
+  
+  result = await asyncio.wait_for(
+      generate_with_timeout(),
+      timeout=timeout
+  )
+
+### Benchmark LLM初始化
+
+之前:
+  llm = LLM(
+      model=config.model_path,
+      tensor_parallel_size=config.tensor_parallel_size,
+      ...
+  )
+
+现在:
+  engine_args = AsyncEngineArgs(
+      model=config.model_path,
+      tensor_parallel_size=config.tensor_parallel_size,
+      ...
+  )
+  llm = AsyncLLM.from_engine_args(engine_args)
+
+==================================================
+测试验证步骤
+==================================================
+
+1. 基础验证:
+   python verify_asyncllm.py
+
+2. 完整测试:
+   python benchmarks/e2e_sweep/run_e2e_sweep.py \
+       --trace-file qwen-bailian-usagetraces-anon/qwen_trace_5min_sparse.jsonl \
+       --model Qwen/Qwen2.5-7B-Instruct \
+       --num-gpus 8 \
+       --base-config benchmarks/e2e_sweep/example_configs/e2e_config_template.py \
+       --output-dir e2e_results/asyncllm_test
+
+3. 成功标志:
+   - 看到 "Initializing AsyncLLM engine (vLLM v1)"
+   - 没有 heartbeat 输出
+   - 所有60个请求完成
+   - 看到 "AsyncLLM engine shutdown complete"
+
+==================================================
+回滚方法（如果需要）
+==================================================
+
+如果AsyncLLM出现问题，可以使用git回滚:
+
+  # 查看修改
+  git diff vllm/profiler/trace_scheduler.py
+  git diff benchmarks/benchmark_e2e_metrics.py
+  
+  # 回滚单个文件
+  git checkout HEAD -- vllm/profiler/trace_scheduler.py
+  git checkout HEAD -- benchmarks/benchmark_e2e_metrics.py
+  
+  # 或创建回滚补丁
+  git diff > asyncllm_changes.patch
+  git apply -R asyncllm_changes.patch
+
+==================================================
+依赖要求
+==================================================
+
+- vLLM 版本: 需要支持 v1 引擎的版本
+- Python: 3.8+
+- 关键依赖:
+  * vllm.v1.engine.async_llm.AsyncLLM
+  * vllm.engine.arg_utils.AsyncEngineArgs
+
+验证命令:
+  python -c "from vllm.v1.engine.async_llm import AsyncLLM; print('OK')"
+
+==================================================
+性能预期
+==================================================
+
+修改前:
+  - 请求58卡死
+  - heartbeat持续输出
+  - 线程池: 10个线程
+  - 信号传递: 间接（可能丢失）
+
+修改后:
+  - 请求58正常完成
+  - 无heartbeat输出
+  - 线程池: 0个（asyncio）
+  - 信号传递: 直接（AsyncGenerator保证）
+
+==================================================
+联系信息
+==================================================
+
+如有问题或需要帮助，请查看:
+- README_修改完成.md
+- AsyncLLM迁移快速指南.md
+- 迁移到AsyncLLM修复总结.md
+
+==================================================
+
+
+
+
+
+
+
+

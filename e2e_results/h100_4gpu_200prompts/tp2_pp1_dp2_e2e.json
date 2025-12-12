@@ -1,0 +1,158 @@
+{
+  "config": {
+    "model_path": "/mnt/disk1/ljm/qwen_test/models/Qwen/Qwen3-8B",
+    "tensor_parallel_size": 2,
+    "pipeline_parallel_size": 1,
+    "max_model_len": null,
+    "batch_sizes": [
+      1,
+      4,
+      8
+    ],
+    "seq_lengths": [
+      512,
+      1024
+    ],
+    "warmup_steps": 5,
+    "benchmark_steps": 0,
+    "operators_to_benchmark": [
+      "all"
+    ],
+    "output_file": "e2e_results/h100_4gpu_200prompts/tp2_pp1_dp2_e2e.json",
+    "include_per_layer_stats": true,
+    "include_summary_stats": true,
+    "verbose": true,
+    "enable_cuda_graph": false,
+    "dtype": "auto",
+    "gpu_memory_utilization": 0.5,
+    "use_trace_data": true,
+    "trace_file_path": "/mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_trace_5min_200prompts.jsonl",
+    "trace_time_range_minutes": [
+      0,
+      4
+    ],
+    "trace_hash_id_seed": 42,
+    "trace_realtime_replay": true,
+    "data_parallel_size": 2,
+    "enable_e2e_metrics": true
+  },
+  "metadata": {
+    "timestamp": "2025-12-10 01:21:23",
+    "cuda_available": true,
+    "cuda_device_count": 4,
+    "data_parallel_size": 2
+  },
+  "e2e_metrics_aggregated": {
+    "num_requests": 175,
+    "num_valid_requests": 175,
+    "num_ranks": 2,
+    "total_time_seconds": 241.11254750704393,
+    "ttft_ms": {
+      "mean": 34.4059404737025,
+      "p50": 29.877342961051248,
+      "p90": 51.554424047470086,
+      "p99": 60.818160939216575
+    },
+    "tpot_ms": {
+      "mean": 14.01193541656271,
+      "p50": 11.657799042589982,
+      "p90": 18.843617749017703,
+      "p99": 18.908260453733526
+    },
+    "e2e_latency_ms": {
+      "mean": 1046.5704330633826,
+      "p50": 858.59033678198,
+      "p90": 1821.7934795888136,
+      "p99": 1947.7801444628276
+    },
+    "queued_time_ms": {
+      "mean": 0.19498903583212157,
+      "p50": 0.17290457617491484,
+      "p90": 0.2569514932110907,
+      "p99": 0.34925938537344386
+    },
+    "total_prompt_tokens": 120010,
+    "total_generation_tokens": 9293,
+    "throughput": {
+      "tokens_per_second": 536.2765286871788
+    }
+  },
+  "e2e_metrics_per_rank": [
+    {
+      "dp_rank": 0,
+      "e2e_metrics": {
+        "num_requests": 88,
+        "num_valid_requests": 88,
+        "total_time_seconds": 241.07537428522483,
+        "num_ranks": 1,
+        "ttft_ms": {
+          "mean": 26.237086816267535,
+          "p50": 24.204015731811523,
+          "p90": 34.26325321197508,
+          "p99": 61.847465038299525
+        },
+        "tpot_ms": {
+          "mean": 12.15041686015752,
+          "p50": 10.795030260591634,
+          "p90": 18.586340911077478,
+          "p99": 18.915442976479728
+        },
+        "e2e_latency_ms": {
+          "mean": 605.4303679107265,
+          "p50": 522.6983439642936,
+          "p90": 1084.96437901631,
+          "p99": 1761.7998296488072
+        },
+        "queued_time_ms": {
+          "mean": 0.14412167101082476,
+          "p50": 0.16161310486495495,
+          "p90": 0.1859308686107397,
+          "p99": 0.21299535408616066
+        },
+        "total_prompt_tokens": 57673,
+        "total_generation_tokens": 4396,
+        "throughput": {
+          "tokens_per_second": 257.46719333748274
+        }
+      }
+    },
+    {
+      "dp_rank": 1,
+      "e2e_metrics": {
+        "num_requests": 87,
+        "num_valid_requests": 87,
+        "total_time_seconds": 241.11254750704393,
+        "num_ranks": 1,
+        "ttft_ms": {
+          "mean": 25.02902074791919,
+          "p50": 23.005962371826172,
+          "p90": 33.51759910583496,
+          "p99": 47.14312076568604
+        },
+        "tpot_ms": {
+          "mean": 10.958984286178305,
+          "p50": 10.711251304317743,
+          "p90": 11.165181225022446,
+          "p99": 18.812835508676834
+        },
+        "e2e_latency_ms": {
+          "mean": 632.21629454765,
+          "p50": 505.794957280159,
+          "p90": 1297.8806293569514,
+          "p99": 1961.7786627821624
+        },
+        "queued_time_ms": {
+          "mean": 0.1529207528065676,
+          "p50": 0.15861866995692253,
+          "p90": 0.18419604748487473,
+          "p99": 0.35951581783592756
+        },
+        "total_prompt_tokens": 62337,
+        "total_generation_tokens": 4897,
+        "throughput": {
+          "tokens_per_second": 278.8490300283348
+        }
+      }
+    }
+  ]
+}

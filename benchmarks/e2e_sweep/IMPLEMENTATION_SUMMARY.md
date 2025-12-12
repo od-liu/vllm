@@ -130,16 +130,15 @@ results/h100_8gpu/
 
 ---
 
-## 🔄 Comparison with Full Benchmark
+## 🔄 E2E Sweep Features
 
-| Feature | E2E Sweep (This Tool) | run_benchmarks.py |
-|---------|----------------------|-------------------|
-| E2E Metrics | ✅ Yes | ✅ Yes |
-| Operator Profiling | ❌ No | ✅ Yes |
-| Speed | 🚀 **Fast** | Slower (2x time) |
-| Complexity | Simple | Complex |
-| Use Case | Quick comparison | Detailed analysis |
-| Output Size | Small | Large |
+| Feature | E2E Sweep (This Tool) |
+|---------|----------------------|
+| E2E Metrics | ✅ Yes |
+| Speed | 🚀 **Fast** |
+| Complexity | Simple |
+| Use Case | Quick comparison |
+| Output Size | Small |
 
 **When to use E2E Sweep:**
 - ✅ Quick performance comparison across TP/DP configs
