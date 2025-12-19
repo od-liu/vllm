@@ -123,20 +123,23 @@ class E2EMetricsCollector:
         
         elif isinstance(metrics_obj, RequestStateStats):
             # v1 engine format
-            # RequestStateStats uses monotonic timestamps for engine events
-            # and wall-clock time for arrival_time
+            # RequestStateStats now uses arrival_time_monotonic for consistent time calculations
+            # All metrics are calculated in monotonic time domain
             
-            # TTFT: Use first_token_latency (already calculated as wall-clock difference)
+            # TTFT: first_token_latency = first_token_ts - scheduled_ts (monotonic)
             if metrics_obj.first_token_latency > 0:
                 ttft_ms = metrics_obj.first_token_latency * 1000
             
-            # Queued time: scheduled_ts - queued_ts (both are monotonic, so difference is valid)
-            if metrics_obj.scheduled_ts > 0 and metrics_obj.queued_ts > 0:
+            # Queued time: scheduled_ts - arrival_time_monotonic (monotonic)
+            # This represents the time from trace timestamp to when engine starts processing
+            if metrics_obj.scheduled_ts > 0 and metrics_obj.arrival_time_monotonic > 0:
+                queued_time_ms = (metrics_obj.scheduled_ts - metrics_obj.arrival_time_monotonic) * 1000
+            elif metrics_obj.scheduled_ts > 0 and metrics_obj.queued_ts > 0:
+                # Fallback for old data without arrival_time_monotonic
                 queued_time_ms = (metrics_obj.scheduled_ts - metrics_obj.queued_ts) * 1000
             
             # TPOT: Calculate from decode time (last_token_ts - first_token_ts)
             # Both are monotonic timestamps, so difference is valid
-            # Note: decode_time = last_token_ts - first_token_ts
             # TPOT = decode_time / (num_generation_tokens - 1)
             # We subtract 1 because the first token is generated during prefill
             if (metrics_obj.last_token_ts > 0 and 
@@ -149,21 +152,16 @@ class E2EMetricsCollector:
                 # Set to None to indicate it's not applicable
                 tpot_ms = None
             
-            # E2E latency: Calculate from arrival_time to finish time
-            # Since RequestStateStats doesn't have finish wall-clock time,
-            # we approximate E2E latency as: first_token_latency + decode_time
-            # This is because:
-            # - first_token_latency = first_token_time (wall-clock) - arrival_time (wall-clock)
-            # - decode_time = last_token_ts (monotonic) - first_token_ts (monotonic)
-            # - We assume monotonic and wall-clock clocks progress at similar rates
-            # Note: This is an approximation, but more accurate than using current time
-            # which would include the time between request completion and metrics collection
-            if (metrics_obj.first_token_latency > 0 and 
-                metrics_obj.last_token_ts > 0 and 
-                metrics_obj.first_token_ts > 0):
+            # E2E latency: last_token_ts - arrival_time_monotonic (all monotonic)
+            # This represents the total time from trace timestamp to request completion
+            if (metrics_obj.last_token_ts > 0 and 
+                metrics_obj.arrival_time_monotonic > 0):
+                e2e_latency_ms = (metrics_obj.last_token_ts - metrics_obj.arrival_time_monotonic) * 1000
+            elif (metrics_obj.first_token_latency > 0 and 
+                  metrics_obj.last_token_ts > 0 and 
+                  metrics_obj.first_token_ts > 0):
+                # Fallback for old data: TTFT + decode_time
                 decode_time = metrics_obj.last_token_ts - metrics_obj.first_token_ts
-                # E2E latency ≈ TTFT (wall-clock) + decode_time (monotonic, but similar rate)
-                # This gives us: arrival -> first_token -> last_token
                 e2e_latency_ms = (metrics_obj.first_token_latency + decode_time) * 1000
             elif metrics_obj.first_token_latency > 0:
                 # If we only have TTFT, use it as a lower bound for E2E latency

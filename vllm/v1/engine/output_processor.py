@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 
 import asyncio
+import time
 from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Any, cast
@@ -130,7 +131,16 @@ class RequestState:
         self.queue = queue
         self.num_cached_tokens = 0
 
-        self.stats = RequestStateStats(arrival_time=arrival_time) if log_stats else None
+        # Calculate arrival_time_monotonic by converting from wall-clock to monotonic domain
+        # This ensures consistent time calculations with other engine timestamps
+        if log_stats:
+            arrival_time_monotonic = time.monotonic() - (time.time() - arrival_time)
+            self.stats = RequestStateStats(
+                arrival_time=arrival_time,
+                arrival_time_monotonic=arrival_time_monotonic
+            )
+        else:
+            self.stats = None
 
         # Stream Interval
         self.stream_interval = stream_interval

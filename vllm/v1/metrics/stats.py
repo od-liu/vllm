@@ -181,6 +181,9 @@ class RequestStateStats:
 
     # This is an engine frontend timestamp (wall-clock)
     arrival_time: float = 0.0
+    
+    # Arrival time in monotonic clock (for consistent time calculations)
+    arrival_time_monotonic: float = 0.0
 
     # These are engine core timestamps (monotonic)
     queued_ts: float = 0.0
@@ -251,9 +254,12 @@ class IterationStats:
         if is_prefilling:
             self.num_prompt_tokens += prompt_len
 
-            first_token_latency = self._time_since(req_stats.arrival_time)
-            self.time_to_first_tokens_iter.append(first_token_latency)
-            req_stats.first_token_latency = first_token_latency
+            # TTFT = first_token_ts - scheduled_ts (both are monotonic timestamps)
+            # We'll calculate this after we have first_token_ts below
+            # For now, keep the legacy calculation for other purposes
+            first_token_latency_legacy = self._time_since(req_stats.arrival_time)
+            self.time_to_first_tokens_iter.append(first_token_latency_legacy)
+            # Note: req_stats.first_token_latency will be properly set below using monotonic time
 
         req_stats.num_generation_tokens += num_new_generation_tokens
 
@@ -280,6 +286,9 @@ class IterationStats:
         # Process the batch-level "new tokens" engine core event
         if is_prefilling:
             req_stats.first_token_ts = engine_core_timestamp
+            # Calculate TTFT = first_token_ts - scheduled_ts (monotonic)
+            if req_stats.scheduled_ts > 0:
+                req_stats.first_token_latency = engine_core_timestamp - req_stats.scheduled_ts
         else:
             itl = engine_core_timestamp - req_stats.last_token_ts
             self.inter_token_latencies_iter.append(itl)
@@ -317,14 +326,25 @@ class IterationStats:
         max_tokens_param: int | None,
         req_stats: RequestStateStats,
     ):
-        e2e_latency = self._time_since(req_stats.arrival_time)
+        # E2E latency = last_token_ts - arrival_time_monotonic (all monotonic)
+        e2e_latency = (
+            req_stats.last_token_ts - req_stats.arrival_time_monotonic
+            if req_stats.arrival_time_monotonic > 0 and req_stats.last_token_ts > 0
+            else self._time_since(req_stats.arrival_time)  # fallback to legacy
+        )
 
-        # Queued interval is from first QUEUED event to first SCHEDULED
-        queued_time = req_stats.scheduled_ts - req_stats.queued_ts
+        # Queued time = scheduled_ts - arrival_time_monotonic (all monotonic)
+        # This represents the time from trace timestamp to when engine starts processing
+        queued_time = (
+            req_stats.scheduled_ts - req_stats.arrival_time_monotonic
+            if req_stats.arrival_time_monotonic > 0 and req_stats.scheduled_ts > 0
+            else req_stats.scheduled_ts - req_stats.queued_ts  # fallback to legacy
+        )
 
         # Prefill interval is from first SCHEDULED to first NEW_TOKEN
         # Any preemptions during prefill is included in the interval
-        prefill_time = req_stats.first_token_ts - req_stats.scheduled_ts
+        # Note: first_token_latency is now TTFT = first_token_ts - scheduled_ts
+        prefill_time = req_stats.first_token_latency
 
         # Decode interval is from first NEW_TOKEN to last NEW_TOKEN
         # Any preemptions during decode are included
