@@ -127,7 +127,7 @@ def save_trace(requests, output_file):
 
 if __name__ == "__main__":
     # Generate sparse 5-minute trace
-    num_requests = 6000
+    num_requests = 5500
     requests = generate_requests(num_requests, duration=300)
     
     output_file = f"qwen_trace_5min_{num_requests}prompts.jsonl"

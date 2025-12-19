@@ -1,0 +1,82 @@
+================================================================================
+E2E BENCHMARK SWEEP RESULTS SUMMARY
+================================================================================
+
+
+TP1_PP1_DP4
+----------------------------------------
+  Requests: 2409
+  Total Time: 242.0 seconds
+
+  TTFT (Time to First Token):
+    Mean:   108.93 ms
+    Median: 94.78 ms
+    P90:    178.00 ms
+    P99:    184.72 ms
+
+  TPOT (Time per Output Token):
+    Mean:   13.68 ms
+    Median: 14.27 ms
+    P90:    17.42 ms
+    P99:    17.48 ms
+
+  E2E Latency:
+    Mean:   1138.22 ms
+    Median: 919.44 ms
+    P90:    2094.09 ms
+    P99:    2384.71 ms
+
+  Throughput:
+    Tokens/s: 7479.03
+
+TP2_PP1_DP2
+----------------------------------------
+  Requests: 2409
+  Total Time: 242.8 seconds
+
+  TTFT (Time to First Token):
+    Mean:   1943.19 ms
+    Median: 1676.42 ms
+    P90:    4168.41 ms
+    P99:    4403.52 ms
+
+  TPOT (Time per Output Token):
+    Mean:   16.23 ms
+    Median: 16.33 ms
+    P90:    20.66 ms
+    P99:    20.91 ms
+
+  E2E Latency:
+    Mean:   2855.99 ms
+    Median: 2389.34 ms
+    P90:    5558.07 ms
+    P99:    5932.23 ms
+
+  Throughput:
+    Tokens/s: 7455.73
+
+TP4_PP1_DP1
+----------------------------------------
+  Requests: 2409
+  Total Time: 331.9 seconds
+
+  TTFT (Time to First Token):
+    Mean:   47875.10 ms
+    Median: 43182.55 ms
+    P90:    81705.78 ms
+    P99:    88983.14 ms
+
+  TPOT (Time per Output Token):
+    Mean:   11.84 ms
+    Median: 11.28 ms
+    P90:    11.82 ms
+    P99:    20.25 ms
+
+  E2E Latency:
+    Mean:   48485.06 ms
+    Median: 43592.74 ms
+    P90:    82169.19 ms
+    P99:    89427.79 ms
+
+  Throughput:
+    Tokens/s: 5454.09

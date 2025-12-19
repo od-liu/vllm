@@ -1,0 +1,81 @@
+{
+  "config": {
+    "model_path": "/mnt/disk1/ljm/qwen_test/models/Qwen/Qwen3-8B",
+    "tensor_parallel_size": 2,
+    "pipeline_parallel_size": 1,
+    "max_model_len": null,
+    "batch_sizes": [
+      1,
+      4,
+      8
+    ],
+    "seq_lengths": [
+      512,
+      1024
+    ],
+    "warmup_steps": 5,
+    "benchmark_steps": 0,
+    "operators_to_benchmark": [
+      "all"
+    ],
+    "output_file": "e2e_results/h100_4gpu_6000prompts/tp2_pp1_dp2_e2e.json",
+    "include_per_layer_stats": true,
+    "include_summary_stats": true,
+    "verbose": true,
+    "enable_cuda_graph": false,
+    "dtype": "auto",
+    "gpu_memory_utilization": 0.5,
+    "use_trace_data": true,
+    "trace_file_path": "/mnt/disk1/ljm/vllm/qwen-bailian-usagetraces-anon/qwen_trace_5min_6000prompts.jsonl",
+    "trace_time_range_minutes": [
+      0,
+      4
+    ],
+    "trace_hash_id_seed": 42,
+    "trace_realtime_replay": true,
+    "data_parallel_size": 2,
+    "enable_e2e_metrics": true
+  },
+  "metadata": {
+    "timestamp": "2025-12-12 08:21:10",
+    "cuda_available": true,
+    "cuda_device_count": 2,
+    "dp_rank": 0,
+    "dp_size": 2
+  },
+  "e2e_metrics": {
+    "num_requests": 2426,
+    "num_valid_requests": 2426,
+    "total_time_seconds": 347.9530541789718,
+    "num_ranks": 1,
+    "ttft_ms": {
+      "mean": 31.315229790130136,
+      "p50": 28.162360191345215,
+      "p90": 47.112464904785156,
+      "p99": 76.25555992126465
+    },
+    "tpot_ms": {
+      "mean": 12.653022063256232,
+      "p50": 11.554475305975956,
+      "p90": 19.602761608586015,
+      "p99": 20.77534417641718
+    },
+    "e2e_latency_ms": {
+      "mean": 668.7107655981376,
+      "p50": 505.50979166291654,
+      "p90": 1349.5197296142578,
+      "p99": 2301.417586975731
+    },
+    "queued_time_ms": {
+      "mean": 0.08820283080021998,
+      "p50": 0.0026801135390996933,
+      "p90": 0.005152542144060135,
+      "p99": 0.010545831173658371
+    },
+    "total_prompt_tokens": 1679268,
+    "total_generation_tokens": 124805,
+    "throughput": {
+      "tokens_per_second": 5184.817257192586
+    }
+  }
+}

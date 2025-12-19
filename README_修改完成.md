@@ -49,7 +49,7 @@ cd /mnt/disk1/ljm/vllm
 python benchmarks/e2e_sweep/run_e2e_sweep.py \
     --trace-file qwen-bailian-usagetraces-anon/qwen_trace_5min_sparse.jsonl \
     --model Qwen/Qwen2.5-7B-Instruct \
-    --num-gpus 8 \
+    --num-gpus 4 \
     --base-config benchmarks/e2e_sweep/example_configs/e2e_config_template.py \
     --output-dir e2e_results/asyncllm_test
 ```

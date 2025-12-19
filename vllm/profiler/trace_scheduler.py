@@ -281,10 +281,13 @@ class TraceScheduler:
             async def generate_with_timeout():
                 """Wrapper to collect all outputs from async generator."""
                 nonlocal result
+                actual_arrival_time = base_time + trace_req.timestamp
+
                 async for output in self.llm.generate(
                     request_id=request_id,
                     prompt=prompt_dict,
                     sampling_params=sampling_params,
+                    arrival_time=actual_arrival_time,
                 ):
                     # Keep updating with latest output
                     result = output

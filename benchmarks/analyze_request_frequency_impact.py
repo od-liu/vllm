@@ -179,15 +179,19 @@ def plot_metrics_vs_frequency(data: Dict, output_dir: Path):
         plt.close()
     
     # 创建综合对比图（所有指标在同一图中，使用mean值）
-    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    fig, axes = plt.subplots(2, 3, figsize=(20, 12))
     fig.suptitle('Key Metrics vs Request Frequency (Mean Values)', fontsize=16, fontweight='bold')
     
     key_metrics = [
         ('ttft_ms', 'TTFT (ms)', axes[0, 0]),
         ('tpot_ms', 'TPOT (ms)', axes[0, 1]),
-        ('e2e_latency_ms', 'E2E Latency (ms)', axes[1, 0]),
+        ('e2e_latency_ms', 'E2E Latency (ms)', axes[0, 2]),
+        ('queued_time_ms', 'Queued Time (ms)', axes[1, 0]),
         ('throughput_tokens_per_second', 'Throughput (tokens/s)', axes[1, 1])
     ]
+    
+    # 隐藏最后一个空白子图
+    axes[1, 2].axis('off')
     
     for metric_name, metric_label, ax in key_metrics:
         for config in sorted(data.keys()):
@@ -261,12 +265,17 @@ def main():
         nargs='+',
         default=[
             'h100_4gpu_200prompts',
-            'h100_4gpu_600prompts',
-            'h100_4gpu_800prompts',
-            'h100_4gpu_1500prompts',
-            'h100_4gpu_3000prompts',
-            'h100_4gpu_2000prompts',
-            'h100_4gpu_2500prompts'
+            'h100_4gpu_483prompts',
+            'h100_4gpu_4851prompts',
+            'h100_4gpu_804prompts',
+            'h100_4gpu_1197prompts',
+            'h100_4gpu_1592prompts',
+            'h100_4gpu_1991prompts',
+            'h100_4gpu_1991prompts_1',
+            'h100_4gpu_4034prompts',
+            'h100_4gpu_2409prompts',
+            'h100_4gpu_2801prompts',
+            'h100_4gpu_1592prompts_p'
         ],
         help='要分析的prompts目录列表'
     )

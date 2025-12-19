@@ -57,6 +57,7 @@ class Request:
             sampling_params
         )
         self.arrival_time = arrival_time if arrival_time is not None else time.time()
+        print(arrival_time,time.time())
 
         self.status = RequestStatus.WAITING
         self.events: list[EngineCoreEvent] = []
